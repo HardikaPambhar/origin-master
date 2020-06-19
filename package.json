@@ -1,0 +1,23 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "my phonegap app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HardikaPambhar/origin-master.git"
+  },
+  "keywords": [
+    "My",
+    "App"
+  ],
+  "author": "Aarvi Technology",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HardikaPambhar/origin-master/issues"
+  },
+  "homepage": "https://github.com/HardikaPambhar/origin-master#readme"
+}
