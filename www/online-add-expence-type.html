@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Add Expence</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body>
+<div id="main">
+  <div id="slide-out-left" class="side-nav">
+    <ul class="collapsible" data-collapsible="accordion" id="navigation">
+    </ul>
+  </div>
+  <div id="page">
+    <div class="top-navbar">
+      <div class="top-navbar-left"><a onClick="history.back()"><i class="fa fa-arrow-left"></i></a></div>
+      <div class="site-title">
+        <h1>Add Expense Type</h1>
+      </div>
+    </div>
+    <div class="content-container maleo-shop_checkout">
+      <div class="maleo-card margin-bottom_low animated fadeInUp">
+        <div class="input-field">
+          <input id="party_name" type="text">
+          <label for="party_name">Expense Type</label>
+          <span style="color:#F00" class="error ErrorMsgClass" id="user_name_err"></span> </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col s6">
+            <button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="SaveQualityForm();">Save</button>
+          </div>
+          <div class="col s6">
+            <button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="history.back();">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="css/datepicker-custom.css"/>
+<script type="text/javascript" charset="utf-8">
+if (window.localStorage["Expense_id"] > 0)
+{
+	PutQualityFormData();
+}
+$(function()
+{
+	$('.dpYears').datepicker({endDate: '+0d', autoclose: true});
+});
+
+function SaveQualityForm()
+{
+	if ($('#party_name').val() == '')
+	{
+		$('#MaterialDetail').html("Please Enter Expense Type.");
+		$('#MaterialDetailBox').modal({show: true});
+		$('#party_name').focus();
+		return false;
+	}
+	
+	$('#loader').show();
+	$.ajax({
+	type       : "GET",
+	url: window.localStorage["ExpenseIncome_APILINK"]+'modify-expence-type.php',
+	crossDomain: true,        
+	data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],id:window.localStorage["Expense_id"],name:$('#party_name').val()},
+	dataType   : 'json',
+	success    : function(response) 
+	{		
+		 $('#loader').hide();	
+		 
+		 if(response['status'] == 1)
+		 { 
+		 	window.localStorage["ExpenseIncome_Success_Msg"] = response['message'];
+		 	//setTimeout(function()
+			//{
+				if(window.localStorage['ExpensePage'] != '' && window.localStorage['ExpensePage'] != null)
+				{
+					//alert(response['id']);
+					window.localStorage['ExpenseTypeID'] = response['id'];
+					location.href = window.localStorage['ExpensePage'];					
+				}
+				else
+				{
+					location.href = 'online-expence-type.html';
+				}
+			//}, 4000); 
+		 }
+		 else
+		 {
+			 $('#MaterialDetail').html(response['message']);
+		 	 $('#MaterialDetailBox').modal({ show: true});	
+		 }
+	},
+	error      : function() 
+	{
+		$('#loader').hide();
+		$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+		$('#MaterialDetailBox').modal({ show: true});
+	}
+	});
+}
+function PutQualityFormData()
+{
+	$('#loader').show();
+	$.ajax({
+	type       : "GET",
+	url: window.localStorage["ExpenseIncome_APILINK"]+'get-expence-type.php',
+	crossDomain: true,        
+	data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],id:window.localStorage["Expense_id"]},
+	dataType   : 'json',
+	success    : function(response) 
+	{		
+		 $('#loader').hide();	
+		 $('#party_name').val(response['name']);
+		 $('#party_name').focus();
+		 
+		 if(response['status'] == 0)
+		 {
+			 $('#MaterialDetail').html(response['message']);
+		 	 $('#MaterialDetailBox').modal({ show: true});	
+		 }
+	},
+	error      : function() 
+	{
+		$('#loader').hide();
+		$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+		$('#MaterialDetailBox').modal({ show: true});
+	}
+	});
+}
+</script> 
+<script>
+$("#navigation").load("online-navigation.html");
+$('#loader').show();
+$.ajax({
+type       : "GET",
+url: window.localStorage["ExpenseIncome_APILINK"]+'navigation.php',
+crossDomain: true,        
+data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"]},
+dataType   : 'json',
+success    : function(response) 
+{		
+	 $('#loader').hide();		 
+	 $("#navigation").html(response['Navigation']);
+},
+error      : function() 
+{
+	$('#loader').hide();
+	$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+	$('#MaterialDetailBox').modal({ show: true});
+}
+});
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg alert-modal">
+    <div class="modal-content" style=" padding: 0px;">
+      <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row" style="margin:0px;">
+            <div class=""> <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-btn"><a style="font-size: 20px; color: #fff;"  data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

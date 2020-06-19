@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Real E State</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body onload="init();">
+<style>
+	.online{width: 100%; height: 37vh; background-color: #095493;  align-items: center; padding-top: 30px;}
+	.online .round-btn-on{    width: 125px;height: 125px;border-radius: 100px; background-color: #0172c9; color: #fff;    margin: 0 auto;    TEXT-ALIGN: CENTER;
+    VERTICAL-ALIGN: MIDDLE;
+    LINE-HEIGHT: 125PX;text-decoration: none;}
+
+	
+
+	
+	
+	
+	
+	.offline{width: 100%; height: 37vh; background-color: #095493; align-items: center; padding-top: 30px;}
+	.offline .round-btn-off{  width: 125px;height: 125px;border-radius: 100px; background-color: #0172c9; color: #fff;    margin: 0 auto;    TEXT-ALIGN: CENTER;
+    VERTICAL-ALIGN: MIDDLE;
+    LINE-HEIGHT: 125PX;text-decoration: none;}
+	
+
+	.on-title{font-size: 25px; color: #fff; text-align: center;font-weight: 600; text-transform: uppercase; margin-bottom: 5px; margin-top: 5px;}
+	.on-desc{font-size: 15px; color: #fff;text-align: center;}
+	
+	
+	.logo-box{padding: 10PX;}
+	
+	</style>
+<div id="main">
+  <div id="page" style="padding:0px;">
+    <div class="maleo-card signup animated fadeInUp" style=" background-image:url(images/bg.jpg);">
+      <h3 class="maleo-card_title big-title text-center">EXPENSE MANAGER</h3>
+       <p class="app-desc" style="text-align: center; text-transform: uppercase; margin-bottom:5px; font-size: 14px;">Please Select Your App Modes.</p>
+     
+      
+      
+      <div class="online">
+      
+      <div class="round-btn-on" onClick="OnlineMode();">
+      	<img src="images/online.png" width="75" height="75" alt=""/> </div>
+      	 <p class="on-title">Online</p>
+      	 <p class="on-desc">This mode will work with Internet.</p>
+      	
+      </div>
+       <div class="offline" >
+       	
+       	 <div onClick="OfflineMode();" class="round-btn-off"><img src="images/offline.png" width="75" height="75" alt=""/>
+       	 
+       	 
+      	
+      </div>
+     		<p class="on-title">Offline</p>
+       	 <p class="on-desc">This mode will work without Internet.</p>
+      		
+       	
+       </div>
+       
+        <div class="logo-box">
+        	
+        	 <div class="row text-center"><img src="images/logo.png" width="200"> </div>
+        	 
+        </div>
+      
+      
+      
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script>
+window.localStorage["ExpenseIncome_APILINK"] = 'http://aarvitech.com/expense-manager/api/';
+if(window.localStorage["ExpenseIncomeLoginMode"] == 'Online')
+{
+	OnlineMode();
+}
+
+if(window.localStorage["ExpenseIncomeLoginMode"] == 'Offline')
+{
+	OfflineMode();
+}
+
+function OnlineMode()
+{
+	location.href='login.html';
+	window.localStorage["ExpenseIncomeLoginMode"] = 'Online';
+}
+
+function OfflineMode()
+{
+	location.href='dashboard.html';
+	window.localStorage["ExpenseIncomeLoginMode"] = 'Offline';
+}
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg alert-modal">
+    <div class="modal-content" style="  padding: 0px;">
+      <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row" style="margin:0px;">
+            <div class=""> <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

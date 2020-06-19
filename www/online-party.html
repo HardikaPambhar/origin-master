@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Income-Expence</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body>
+<div id="main">
+  <div id="page" style="padding:0px;">
+    <div class="top-navbar">
+      <div class="top-navbar-left"><a onClick="history.back()"><i class="fa fa-arrow-left"></i></a></div>
+      <div class="site-title">
+        <h1>Party</h1>
+      </div>
+    </div>
+    <div class="maleo-card signup animated fadeInUp">
+      <div class="" style="margin-top: 40px;">
+        <form class="col s12 " id="FormID" onsubmit="return false;">
+          <div id="main">
+            <div id="page" style="padding:0px;">
+              <div class="maleo-card signup animated fadeInUp">
+               
+                <div class="form-content">
+                  <div class="input-field with-icon"><span class="icon"><i class="fa fa-user"></i></span>
+                    <input id="party_name" type="text">
+                    <label for="party_name">Name</label>
+                  </div>
+                  <div class="input-field with-icon"><span class="icon"><i class="fa fa-user"></i></span>
+                    <input id="company_name" type="text">
+                    <label for="company_name">Company Name</label>
+                  </div>
+                  <div class="input-field with-icon"><span class="icon"><i class="fa fa-envelope"></i></span>
+                    <input id="party_email" type="email">
+                    <label for="party_email">Email</label>
+                  </div>
+                  <div class="input-field with-icon"><span class="icon"><i class="fa fa-mobile" style="font-size: 25px;"></i></span>
+                    <input id="party_mobile" type="number">
+                    <label for="party_mobile">Mobile</label>
+                  </div>
+                  <div style="margin: 15px 0; display:none;" class="ActiveClass">
+                    <input id="is_active" type="checkbox">
+                    <label for="is_active">Is Active?</label>
+                  </div>
+                
+                  <button class="btn-large block margin-bottom" onClick="SavePartyForm();" type="button">Save</button>
+                  <div class="app-desc text-center"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="app-desc text-center"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script type="text/javascript" charset="utf-8">
+if(window.localStorage["Party_Id"] != 0)
+{
+	GetPartyDetails();
+}
+
+function GetPartyDetails()
+{
+	$('#loader').show();
+	$.ajax({
+        type       : "GET",
+		url: window.localStorage["ExpenseIncome_APILINK"]+'get-party-details.php',
+        crossDomain: true,        
+        data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],id:window.localStorage["Party_Id"]},
+        dataType   : 'json',
+        success    : function(response) 
+		{		
+			 $('#loader').hide();		 
+			 $('#party_name').val(response['party_name']);
+			 $('#company_name').val(response['company_name']);
+			 $('#party_mobile').val(response['party_mobile']);
+			 $('#party_email').val(response['party_email']);
+			// alert(response['is_active']);
+			 if(response['is_active'] == 1)
+			 {
+				 $("#is_active").prop("checked" , true);
+			 }
+			 else
+			 {
+				 $("#is_active").prop("checked" , false);
+			 }
+			 
+			 $('#party_name').focus();
+			 $('#company_name').focus();
+			 $('#party_mobile').focus();
+			 $('#party_email').focus();	
+			 $('.ActiveClass').show();		 
+        },
+        error      : function() 
+		{
+			$('#loader').hide();
+			$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+			$('#MaterialDetailBox').modal({ show: true});
+        }
+    });  	
+}
+
+function SavePartyForm() 
+{ 
+	if($('#party_name').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Name.");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#party_name').focus();
+		return false;
+	}  
+	/*if($('#party_email').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Email Address.");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#party_email').focus();
+		return false;
+	}  */
+	if($('#party_email').val() != "" && validateEmail(document.getElementById('party_email')) == false)
+	{
+		$('#MaterialDetail').html("Please Enter Valid Email Address");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#party_email').focus();
+		return false;
+	}
+	/*if($('#party_mobile').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Mobile.");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#party_mobile').focus();
+		return false;
+	}*/
+	
+	var is_active = 0;
+	if($("#is_active").is(":checked"))
+	{
+		var is_active = 1;
+	}
+	//alert(is_active);
+	$('#loader').show();
+	$.ajax({
+        type       : "GET",
+		url: window.localStorage["ExpenseIncome_APILINK"]+'modify-party-details.php',
+        crossDomain: true,        
+        data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],party_name:$('#party_name').val(),company_name:$('#company_name').val(),party_mobile:$('#party_mobile').val(),party_email:$('#party_email').val(),is_active:is_active,id:window.localStorage["Party_Id"]},
+        dataType   : 'json',
+        success    : function(response) 
+		{		
+			 $('#loader').hide();		 
+			 if(response['status']=='1')
+			 {
+				//$('#MaterialDetail').html(response['message']);
+				//$('#MaterialDetailBox').modal({ show: true});
+				window.localStorage["ExpenseIncome_Success_Msg"] = response['message'];
+				if(window.localStorage['Partypage'] != '' && window.localStorage['Partypage'] != null)
+				{
+					window.localStorage["ExMPReminder_PartyName"] = response['PartyName'];
+					window.localStorage["ExMPReminder_PartyID"] = response['PartyID'];
+					document.location=window.localStorage['Partypage'];
+				}
+				else
+				{
+					document.location='online-party-list.html';
+					//setTimeout(function(){ document.location='online-party-list.html'; }, 3000);
+				}
+			 }
+			 else
+			 {
+				 $('#MaterialDetail').html(response['message']);
+				 $('#MaterialDetailBox').modal({ show: true});
+			 }			 
+        },
+        error      : function() 
+		{
+			$('#loader').hide();
+			$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+			$('#MaterialDetailBox').modal({ show: true});
+        }
+    });  	
+}
+
+function validateEmail(email)
+{
+	var re_mail = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z])+$/;
+	if (!re_mail.test(email.value))
+	{
+		return false;
+	}
+	return true;
+}
+
+$("#navigation").load("online-navigation.html");
+$('#loader').show();
+$.ajax({
+type       : "GET",
+url: window.localStorage["ExpenseIncome_APILINK"]+'navigation.php',
+crossDomain: true,        
+data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"]},
+dataType   : 'json',
+success    : function(response) 
+{		
+	 $('#loader').hide();		 
+	 $("#navigation").html(response['Navigation']);
+},
+error      : function() 
+{
+	$('#loader').hide();
+	$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+	$('#MaterialDetailBox').modal({ show: true});
+}
+});
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row">
+            <div class="col-lg-12">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

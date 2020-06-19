@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Add Income</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+<style>
+.mb5px {
+	margin-bottom: 10px;
+}
+.font-15 {
+	font-size: 18px;
+	font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div id="main">
+  <div id="slide-out-left" class="side-nav">
+    <ul class="collapsible" data-collapsible="accordion" id="navigation">
+    </ul>
+  </div>
+  <div id="page"  style="padding-top: 55px;">
+    <div class="top-navbar">
+      <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i class="fa fa-bars"></i></a></div>
+      <div class="top-navbar-right"> <a data-toggle="collapse" class="pull-right btn-default" _href="#Income" href="javascript:;" onClick="$('#IncomeFilterBoxID').toggle();" data-target="#Income" style=" margin-left:15px;"><i class="fa fa-filter"></i></a> </div>
+      <div class="site-title">
+        <h1>Statement</h1>
+      </div>
+    </div>
+    <div class="content-container maleo-shop_checkout">
+      <div class="maleo-card product-single animated fadeInUp maleo-shop_checkout form-horizontal " >
+        <div id="IncomeFilterBoxID" class="collapse">
+          <div class="clearfix"></div>
+          <div class="input-field">
+            <div class="row">
+              <div class="col-md-10 col-xs-10 col-xs-10">
+                <div data-date-viewmode="years" data-date-format="d-M-yyyy" data-date="" class="input-append date dpYears">
+                  <input style="border:1px solid #ccc; height:34px; padding:0px 10px; z-index:0;" placeholder="From date"   readonly  id="from_date" name="from_date" class="form-control" type="text">
+                  <span class="input-group-btn add-on">
+                  <button class="btn btn-primary" type="button"><i class="fa fa-calendar"></i></button>
+                  </span> </div>
+              </div>
+              <div class="col-lg-2 col-md-2 col-xs-2">
+                <button style="float:left;" class="btn btn-primary RemoveTabIndexClass" onClick="$('#from_date').val('');" type="button"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="input-field">
+            <div class="row">
+              <div class="col-md-10 col-xs-10 col-xs-10">
+                <div data-date-viewmode="years" data-date-format="d-M-yyyy" data-date="" class="input-append date dpYears">
+                  <input style="border:1px solid #ccc; height:34px; padding:0px 10px; z-index:0;"  readonly id="to_date" name="to_date" class="form-control" placeholder="End date" type="text">
+                  <span class="input-group-btn add-on">
+                  <button class="btn btn-primary" type="button"><i class="fa fa-calendar"></i></button>
+                  </span> </div>
+              </div>
+              <div class="col-lg-2 col-md-2 col-xs-2">
+                <button style="float:left;" class="btn btn-primary RemoveTabIndexClass" onClick="$('#to_date').val('');" type="button"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12">
+            <div class="row">
+              <div class="col s6">
+                <button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="LoadStatements();">Search</button>
+              </div>
+              <div class="col s6">
+                <button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="location.href='online-statement.html';">Show All</button>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div style="padding: 15px;" class="StatementsClass"> </div>
+      </div>
+    </div>
+    <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script type="text/javascript" src="js/moment.js"></script> 
+<script type="text/javascript" charset="utf-8">
+LoadStatements();										
+function LoadStatements()
+{
+	$('#loader').show();
+	$.ajax({
+	type       : "GET",
+	url: window.localStorage["ExpenseIncome_APILINK"]+'statement.php',
+	crossDomain: true,        
+	data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],from_date:$('#from_date').val(),to_date:$('#to_date').val()},
+	dataType   : 'json',
+	success    : function(response) 
+	{		
+		 $('#loader').hide();	
+		 $('.StatementsClass').html(response['details']);
+	},
+	error      : function() 
+	{
+		$('#loader').hide();
+		$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+		$('#MaterialDetailBox').modal({ show: true});
+	}
+	});
+	
+}
+</script> 
+<script>
+$("#navigation").load("online-navigation.html");
+$('#loader').show();
+$.ajax({
+type       : "GET",
+url: window.localStorage["ExpenseIncome_APILINK"]+'navigation.php',
+crossDomain: true,        
+data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"]},
+dataType   : 'json',
+success    : function(response) 
+{		
+	 $('#loader').hide();		 
+	 $("#navigation").html(response['Navigation']);
+},
+error      : function() 
+{
+	$('#loader').hide();
+	$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+	$('#MaterialDetailBox').modal({ show: true});
+}
+});
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg alert-modal">
+    <div class="modal-content" style="  padding: 0px;">
+      <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row" style="margin:0px;">
+            <div class=""> <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="css/datepicker-custom.css" />
+<script type="text/javascript">
+$(function()
+{
+	$('.dpYears').datepicker({format: "dd-mm-yyyy", autoclose: true});//, setDate: new Date(),endDate: '+0d'
+});
+</script>
+</body>
+</html>

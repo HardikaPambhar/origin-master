@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>taxodeal</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body onload="onBodyLoad()">
+<div id="main">
+  <div id="slide-out-left" class="side-nav">
+             <ul class="collapsible" data-collapsible="accordion" id="navigation">
+                   
+
+                </ul>
+  </div>
+  <div id="page">
+    <div class="top-navbar">
+      <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i class="fa fa-bars"></i></a></div>
+      <div class="top-navbar-right"><a href="#" class="dropdown-button" data-activates="dropdown1"><i class="fa fa-ellipsis-v"></i></a>
+        <ul id="dropdown1" class="dropdown-content">
+          <li><a href="my-profile.html"><i class="fa fa-user"></i> My Profile</a></li>
+          <li><a href="change-password.html"><i class="fa fa-lock"></i> Change Password</a></li>
+          <li class="divider"></li>
+          <li><a href="logout.html"><i class="fa fa-sign-out"></i> Log Out</a></li>
+        </ul>
+      </div>
+      <div class="site-title">
+        <h1></h1>
+      </div>
+    </div>
+    <div class="content-container maleo-shop_checkout">
+      <div class="maleo-card margin-bottom_low animated fadeInUp">
+        <h3 class="maleo-card_title">My Profile</h3>
+        <div class="input-field">
+          <input id="name" type="text">
+          <label for="name"> Name</label>
+        </div>
+        <div class="input-field">
+          <input id="user_name" type="text">
+          <label for="user_name">User Name</label>
+        </div>
+        <div class="input-field">
+          <input id="mobile" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "10">
+          <label for="mobile">Mobile</label>
+        </div>       
+      </div>
+      <button class="btn btn-primary animated bounceIn" type="button" onClick="SaveRegisterForm();">Save</button>
+    </div>
+    <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script type="text/javascript" charset="utf-8">
+var db;
+var shortName = 'TexoSouda';
+var version = '1.0';
+var displayName = 'TexoSouda';
+var maxSize = 65535;
+
+function errorHandler(transaction, error) 
+{
+   alert('Error: ' + error.message + ' code: ' + error.code);
+}
+function onBodyLoad()
+{
+ if (!window.openDatabase) 
+ {  
+   alert('Databases are not supported in this browser.');
+   return;
+ }
+
+ db = openDatabase(shortName, version, displayName,maxSize);
+
+ db.transaction(function(transaction) 
+ {	
+   transaction.executeSql('SELECT * FROM register where register_id='+window.localStorage["Taxo_LoginId"]+';', [],
+   function(transaction, result) 
+   {	   
+      if (result != null && result.rows != null)
+	  {
+		for (var i = 0; i < result.rows.length; i++) 
+		{			
+          var row = result.rows.item(i);
+
+		  $('#name').val(row.name);
+		  $('#user_name').val(row.user_name);
+		  $('#mobile').val(row.mobile);
+		  
+		  $('#mobile').focus();
+		  $('#user_name').focus();
+		  $('#name').focus();
+		}
+      }
+     },errorHandler);
+ },errorHandler);
+}
+
+function SaveRegisterForm() 
+{ 
+ if($('#name').val()=='')
+ {
+	$('#MaterialDetail').html("Please Enter Name.");
+	$('#MaterialDetailBox').modal({ show: true});
+	$('#name').focus();
+	 return false;
+ }  
+ if($('#user_name').val()=='')
+ {
+	$('#MaterialDetail').html("Please Enter User Name.");
+	$('#MaterialDetailBox').modal({ show: true});
+	$('#user_name').focus();
+	 return false;
+ }  
+ if($('#mobile').val()!='' && $('#mobile').val().length<10)	
+ {
+	$('#MaterialDetail').html("Please enter 10 digit mobile number.");
+	$('#MaterialDetailBox').modal({ show: true});
+	$('#mobile').focus();
+	return false;	
+ }	
+ db.transaction(function(transaction) 
+ {
+   transaction.executeSql('SELECT * FROM register where user_name="'+$('#user_name').val()+'" and register_id!="'+window.localStorage["Taxo_LoginId"]+'";', [],
+   function(transaction, Total) 
+   {	   
+	  if (Total != null && Total.rows != null)
+	  {
+		if(Total.rows.length!='0')
+		{
+			$('#MaterialDetail').html("User name alreday exist.");
+			$('#MaterialDetailBox').modal({ show: true});
+			$('#user_name').focus();
+			return false;
+		}
+		else
+		{
+			 transaction.executeSql("UPDATE register SET name = '" + $('#name').val() + "',user_name = '" + $('#user_name').val() + "',mobile = '" + $('#mobile').val() + "' WHERE register_id = " + window.localStorage["Taxo_LoginId"], []);
+			
+			 $('#MaterialDetail').html("Your Profile successfully  updated.");
+			 $('#MaterialDetailBox').modal({ show: true});			 
+		}
+	  }
+	 },errorHandler);		  	   
+  
+ },errorHandler);	
+}
+
+</script>
+
+        <script>
+$("#navigation").load("navigation.html");
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+       <div class="modal-dialog modal-lg alert-modal">   
+               <div class="modal-content" style="  padding: 0px;">
+        <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+        <div class="modal-body">
+          <div class="input-block">
+            <div class="row" style="margin:0px;">
+              <div class="">
+                <span id="MaterialDetail"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+      </div>
+            </div>
+</div>
+</body>
+</html>

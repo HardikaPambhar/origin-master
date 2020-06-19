@@ -1,0 +1,36 @@
+var app = {
+  initialize: function () {
+	  
+    this.bindEvents();
+  },
+  bindEvents: function () {  
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+  },
+  onDeviceReady: function () {
+    document.getElementById("share").addEventListener("click", shareFunction);
+	if(window.plugins.socialsharing){
+		alert('not avail');
+	}	
+  }
+};
+var options = {
+  message: 'Invite your friends and family member to use our application. Please download from ',
+  subject: 'Refer App',
+  url: 'https://www.aarvitechnology.com/Expense-Manager-App/',
+  chooserTitle: 'Share With',
+};
+var onSuccess = function (result) {
+  console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+  console.log("Shared to app: " + result.app); // On Android result.app since plugin version 5.4.0 this is no longer empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+};
+
+var onError = function (msg) {
+  console.log("Sharing failed with message: " + msg);
+};
+
+function shareFunction() {
+  window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+}
+
+
+

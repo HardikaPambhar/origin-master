@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "949267733325",
+    "firebase_url": "https://expense-manager-29d1f.firebaseio.com",
+    "project_id": "expense-manager-29d1f",
+    "storage_bucket": "expense-manager-29d1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949267733325:android:4d1aff55850c5cec",
+        "android_client_info": {
+          "package_name": "com.incomeexpence.aarvitech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949267733325-qg75t5oliocrefp8dh9ssk5u8a35r1oe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEh6Nn0fYKv578sms85Mj1KX-2apIf5FI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949267733325-qg75t5oliocrefp8dh9ssk5u8a35r1oe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "949267733325-dphml53m2j5826tc5f0k0m8vlk8q1h7l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.incomeexpence.aarvitech",
+                "app_store_id": "1460457337"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

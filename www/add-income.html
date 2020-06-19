@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Add Expence</title>
+        <meta charset="utf-8">
+        <meta content="IE=edge" http-equiv="x-ua-compatible">
+        <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/responsive.css">
+        <link rel="shortcut icon" href="images/favicon.png">
+    </head>
+    <body onLoad="onBodyLoad();">
+        <div id="main">
+            <div id="slide-out-left" class="side-nav">
+                <ul class="collapsible" data-collapsible="accordion" id="navigation">
+
+
+                </ul>
+            </div>
+            <div id="page">
+                <div class="top-navbar">
+                    <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i class="fa fa-bars"></i></a></div>
+
+                    <div class="site-title">
+                        <h1>Add Income</h1>
+                    </div>
+                </div>
+                <div class="content-container maleo-shop_checkout">
+                    <div class="maleo-card margin-bottom_low animated fadeInUp">
+
+                        <div class="input-field">
+                            <div class="input-group">
+                                <select class="browser-default"  id="income_master_id" >
+                                    <option value="0"  selected>Income Type</option>
+
+                                </select>
+                                <span class="input-group-btn">
+                                    <a href="javascript:;"  onclick="window.localStorage['page']='add-income.html'; location.href='add-income-type.html';"  class="btn btn-primary" style="height:33px;"><i class="fa fa-plus"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <div class="row">
+                                <div class="col-md-10 col-xs-10 col-xs-10">
+                                    <div data-date-viewmode="years" data-date-format="d-M-yyyy" data-date="" class="input-append date dpYears">
+                                        <input style="border:1px solid #ccc; height:34px; padding:0px 10px; z-index:0;"  readonly  id="quality_date" name="quality_date" class="form-control" type="text">
+                                        <span class="input-group-btn add-on">
+                                            <button class="btn btn-primary" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span> </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-xs-2">
+                                    <button style="float:left;" class="btn btn-primary RemoveTabIndexClass" onClick="$('#quality_date').val('');" type="button"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <input id="amount" type="number" >
+                            <label for="amount">Amount</label>
+                        </div>
+                        <div class="input-field">
+                            <textarea id="review" class="materialize-textarea"></textarea>
+                            <label for="review">Remark</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">  
+                        <div class="row">
+
+                            <div class="col s6"><button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="SavePartyForm();">Save</button></div>
+                            <div class="col s6"><button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="history.back();">Back</button></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/jquery.js"></script> 
+        <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+        <script type="text/javascript" src="js/materialize.min.js"></script> 
+        <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+        <script type="text/javascript" src="js/slick.min.js"></script> 
+        <script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script type="text/javascript" src="js/moment.js"></script>
+
+
+        <script type="text/javascript" charset="utf-8">
+                                var db;
+                                var shortName = 'IncomeExpence';
+                                var version = '1.0';
+                                var displayName = 'IncomeExpence';
+                                var maxSize = 65535;
+
+                                function errorHandler(transaction, error)
+                                {
+                                    alert('Error: ' + error.message + ' code: ' + error.code);
+                                }
+                                function onBodyLoad()
+                                {
+                                    if (!window.openDatabase)
+                                    {
+                                        alert('Databases are not supported in this browser.');
+                                        return;
+                                    }
+
+                                    db = openDatabase(shortName, version, displayName, maxSize);
+
+
+
+                                    var startDate = moment().format('DD-MMM-YYYY');
+//                            var d = new Date();
+//                            quality_date = d.getDate() + "-" + (d.getMonth() + 1) + "-" + (d.getFullYear());
+
+                                    $('#quality_date').val(startDate);
+
+
+                                    GetBrokerList();
+
+
+
+                                    if (window.localStorage["Income_id"] > 0)
+                                    {
+                                        PutQualityFormData();
+                                    }
+
+                                }
+
+
+
+
+                                function GetBrokerList()
+                                {
+
+                                    $('#income_master_id').html('');
+                                    $('#income_master_id').append('<option value="0" selected>Income Type</option>');
+                                    db.transaction(function(transaction)
+                                    {
+
+                                        transaction.executeSql('SELECT * FROM incometype order by incometype;', [],
+                                                function(transaction, result)
+                                                {
+
+                                                    if (result != null && result.rows != null)
+                                                    {
+                                                        for (var i = 0; i < result.rows.length; i++)
+                                                        {
+                                                            var row = result.rows.item(i);
+
+                                                            $('#income_master_id').append('<option value="' + row.id + '">' + row.incometype + '</option>');
+                                                        }
+                                                    }
+                                                    if (window.localStorage.TMP_INC_ID) {
+                                                        $('#income_master_id').val(window.localStorage.TMP_INC_ID);
+                                                    }
+                                                }, errorHandler);
+                                    }, errorHandler)
+                                }
+                                function PutQualityFormData()
+                                {
+                                    db.transaction(function(transaction)
+                                    {
+                                        transaction.executeSql('SELECT * FROM income where income_id=' + window.localStorage["Income_id"] + ';', [],
+                                                function(transaction, result)
+                                                {
+                                                    if (result != null && result.rows != null && result.rows.length > 0)
+                                                    {
+                                                        for (var i = 0; i < result.rows.length; i++)
+                                                        {
+                                                            var row = result.rows.item(i);
+
+                                                            $('#income_master_id').val(row.income_master_id);
+
+                                                            //var scope23 = moment(row.income_date).format("DD-MMM-YYYY");
+
+                                                            var scope23 = moment(row.income_date, 'MM-DD-YYYY').format('DD-MMM-YYYY');
+                                                            var amount = parseFloat(row.amount).toFixed(2);
+                                                            $('#quality_date').val(scope23);
+                                                            $('#amount').val(amount);
+                                                            $('#review').val(row.review);
+
+
+
+                                                            $('#amount').focus();
+                                                            $('#review').focus();
+                                                        }
+                                                    }
+                                                }, errorHandler);
+                                    }, errorHandler);
+                                }
+
+                                function SavePartyForm()
+                                {
+
+                                    if ($('#income_master_id').val() == '0')
+                                    {
+                                        $('#MaterialDetail').html("Please Select Income Type.");
+                                        $('#MaterialDetailBox').modal({show: true});
+                                        $('#income_master_id').focus();
+                                        return false;
+                                    }
+
+                                    if ($('#quality_date').val() == '')
+                                    {
+                                        $('#MaterialDetail').html("Please Select Date.");
+                                        $('#MaterialDetailBox').modal({show: true});
+                                        $('#quality_date').focus();
+                                        return false;
+                                    }
+                                    if ($('#amount').val() == '')
+                                    {
+                                        $('#MaterialDetail').html("Please Enter Amount.");
+                                        $('#MaterialDetailBox').modal({show: true});
+                                        $('#amount').focus();
+                                        return false;
+                                    }
+
+
+
+
+                                    db.transaction(function(transaction)
+                                    {
+                                        var scope2 = moment($('#quality_date').val(), 'DD-MMM-Y').format('MM-DD-Y');
+                                        console.log(scope2);
+                                        if (parseInt(window.localStorage["Income_id"]) > 0)
+                                        {
+
+                                            var executeQuery = "UPDATE income SET income_master_id = ?,income_date = ?,amount = ?,review = ? WHERE income_id = ?";
+                                            transaction.executeSql(executeQuery, [$('#income_master_id').val(), scope2, $('#amount').val(), $('#review').val(), window.localStorage["Income_id"]]);
+                                        }
+                                        else
+                                        {
+
+                                            transaction.executeSql('INSERT INTO income(income_master_id, income_date, amount, review) VALUES (?,?,?,?)', [$('#income_master_id').val(), scope2, $('#amount').val(), $('#review').val()]);
+                                        }
+                                    });
+                                    localStorage.removeItem('TMP_INC_ID');
+                                    location.href = 'income.html';
+                                }
+        </script>
+
+        <script>
+            $("#navigation").load("navigation.html");
+        </script>
+
+        <div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg alert-modal">   
+                <div class="modal-content" style="  padding: 0px;">
+                    <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+                    <div class="modal-body">
+                        <div class="input-block">
+                            <div class="row" style="margin:0px;">
+                                <div class="">
+                                    <span id="MaterialDetail"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/datepicker-custom.css" />
+        <script type="text/javascript">
+            $(function()
+            {
+                $('.dpYears').datepicker({endDate: '+0d', autoclose: true, setDate: new Date()});
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Real Estate</title>
+        <meta charset="utf-8">
+        <meta content="IE=edge" http-equiv="x-ua-compatible">
+        <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/responsive.css">
+        <link rel="shortcut icon" href="images/favicon.png">
+    </head>
+    <body onLoad="ListDBValues();">
+        <div id="main">
+            <div id="slide-out-left" class="side-nav">
+                <ul class="collapsible" data-collapsible="accordion" id="navigation">
+                   
+
+                </ul>
+            </div>
+            <div id="page">
+                <div class="top-navbar">
+                    <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i class="fa fa-bars"></i></a></div>
+                    <div class="top-navbar-right">
+                        <a data-toggle="collapse" class="pull-right btn-default" data-target="#Income" href="#Income" style=" margin-left:15px;"><i class="fa fa-filter"></i></a> <a href="add-income.html" class="pull-right  btn-default" style="text-decoration:none;"><i class="fa fa-plus"></i> Add</a>
+                    </div>
+
+
+                    <div class="site-title">
+                        <h1>Income</h1>
+                    </div>
+                </div>
+                <div class="content-container">
+                    <div class="maleo-card product-single animated fadeInUp maleo-shop_checkout form-horizontal ">
+
+                        <div id="Income" class="collapse">
+                            <div class="input-field" style="margin:15px 0px; ">
+                                <input style="border:1px solid #ccc; height:34px !important; padding:0px 10px; z-index:0;" class=" form-control" type="text" id="ReviewSearch">
+                            </div>
+
+                            <div class="row text-left">
+                                <div class="col-md-12">
+
+                                    <div class="col-md-9 col-xs-9 col-xs-9">
+                                        <div data-date-viewmode="years" data-date-format="d-M-yyyy" data-date="" class="input-append date dpYears">
+                                            <input style="border:1px solid #ccc; height:34px !important; padding:0px 10px;  z-index:0;"  readonly  id="from_date" name="from_date" placeholder="Start Date" class="form-control" type="text">
+                                            <span class="input-group-btn add-on" style=" margin-top: -54px;">
+                                                <button class="btn btn-primary" style=" height:34px !important; line-height: 34px;" type="button"><i class="fa fa-calendar"></i></button>
+                                            </span> </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-2">
+                                        <button style="float:left;height:34px !important; line-height: 34px;" class="btn btn-primary RemoveTabIndexClass" onClick="$('#from_date').val('');" type="button"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row  text-left">
+                                <div class="col-md-12">
+
+                                    <div class="col-md-9 col-xs-9 col-xs-9">
+                                        <div data-date-viewmode="years" data-date-format="d-M-yyyy" data-date="" class="input-append date dpYears">
+                                            <input style="border:1px solid #ccc;  height:34px !important;  padding:0px 10px; z-index:0;" readonly  id="to_date" name="to_date" class="form-control" placeholder="End Date" type="text" >
+                                            <span class="input-group-btn add-on" style=" margin-top: -54px;">
+                                                <button class="btn btn-primary" style=" height:34px !important; line-height: 34px;" type="button"><i class="fa fa-calendar"></i></button>
+                                            </span> </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-xs-2">
+                                        <button style=" float:left;height:34px !important; line-height: 34px;" class="btn btn-primary RemoveTabIndexClass" onClick="$('#to_date').val('');" type="button"><i class="fa fa-times"></i></button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group  text-left">
+                                <div class="col-xs-12">   
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="col s6"> <input type="button" value="Search" style=" line-height: 34px; height:34px !important; " class="btn btn-block btn-primary" onClick="$('#startrow').val('0');
+                                                    ListDBValues();"></div>
+                                            <div class="col s6"> <input type="button" value="Show All"  style=" height:34px !important; line-height: 34px;"  class="btn btn-block btn-primary"  onClick="location.href = 'income.html'"></div>
+
+                                        </div>
+
+
+                                        <input type="hidden" name="startrow" id="startrow" value="0" />
+                                        <input type="hidden" name="totalrow" id="totalrow" value="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <div class="tab-content" id="income_list"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+            </div>
+        </div>
+
+        <script type="text/javascript" charset="utf-8">
+            var db;
+            var shortName = 'IncomeExpence';
+            var version = '1.0';
+            var displayName = 'IncomeExpence';
+            var maxSize = 65535;
+            window.localStorage["Income_id"] = 0;
+            function errorHandler(transaction, error)
+            {
+                alert('Error: ' + error.message + ' code: ' + error.code);
+            }
+            function EditIncome(id)
+            {
+                window.localStorage["Income_id"] = id;
+                location.href = 'add-income.html';
+            }
+            function AddIncome()
+            {
+                window.localStorage["Income_id"] = '';
+                location.href = 'add-income.html';
+            }
+
+            function DeleteIncome(id)
+            {
+                if (confirm("Are you sure you want to delete this income?"))
+                {
+                    db.transaction(function(transaction)
+                    {
+                        transaction.executeSql("Delete from income WHERE income_id = '" + id + "'" , []);
+                    });
+					setTimeout(function(){location.href = 'income.html';}, 1000); 
+                    //location.href = 'income.html';
+                }
+            }
+            function ListDBValues()
+            {
+                var totalrow = parseInt($('#totalrow').val());
+                var startrow = parseInt($('#startrow').val());
+                if (!window.openDatabase)
+                {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                db = openDatabase(shortName, version, displayName, maxSize);
+
+                db.transaction(function(tx)
+                {
+                    //tx.executeSql('drop table Income_master');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS income(income_id INTEGER NOT NULL PRIMARY KEY,income_master_id INTEGER NOT NULL DEFAULT 0,income_date date NOT NULL,amount DECIMAL(10,2) NOT NULL DEFAULT 0,review TEXT  NULL)');
+
+
+                    //tx.executeSql('drop table Income type');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS incometype(id INTEGER NOT NULL PRIMARY KEY,incometype TEXT NOT NULL)');
+
+                });
+
+                if (totalrow > startrow && totalrow != 0)
+                {
+                    if (startrow == 0)
+                    {
+                        $("#income_list").html("<strong>loading..........</strong>");
+                    }
+                    else
+                    {
+                        $("#income_list").append("<li class='TempLoaderClass'><strong>loading..........</strong></li>");
+                    }
+
+                    db.transaction(function(transaction)
+                    {
+                        where = 'where 1=1';
+
+
+                        if ($('#ReviewSearch').val() != '')
+                        {
+                            where += ' and review like "' + $('#ReviewSearch').val() + '%" or incometype like "' + $('#ReviewSearch').val() + '%" or amount like "' + $('#ReviewSearch').val() + '%" ';
+                        }
+
+                        if ($('#from_date').val() != '')
+                        {
+                            var scope1 = moment($('#from_date').val(), 'DD-MMM-Y').format('MM-DD-Y');
+                            console.log(scope1);
+                            where += ' and income_date >=  "' + scope1 + '" ';
+                        }
+
+                        if ($('#to_date').val() != '')
+                        {
+                            var scope2 = moment($('#to_date').val(), 'DD-MMM-Y').format('MM-DD-Y');
+                            console.log(scope2);
+                            where += ' and income_date <= "' + scope2 + '" ';
+                        }
+
+                        transaction.executeSql('SELECT *,incometype   FROM income left join incometype on income_master_id=id  ' + where + ' group by income_id ;', [],
+                                function(transaction, Total)
+                                {
+
+                                    if (Total != null && Total.rows != null && Total.rows.length > 0)
+                                    {
+                                        $('#totalrow').val(Total.rows.length);
+                                    }
+                                    else
+                                    {
+                                        $("#income_list").html('<center>No Information Available</center>');
+                                    }
+                                }, errorHandler);
+
+                        ExpenceListing = '';
+                        transaction.executeSql('SELECT *,incometype  FROM income left join incometype on income_master_id=id ' + where + ' group by income_id ORDER BY income_date DESC,income_id DESC LIMIT ' + startrow + ',10;', [],
+                                function(transaction, result)
+                                {
+                                    if (result != null && result.rows != null && result.rows.length > 0)
+                                    {
+                                        for (var i = 0; i < result.rows.length; i++)
+                                        {
+                                            var row = result.rows.item(i);
+
+                                            TRClass = '';
+                                            if (i % 2 == 0)
+                                            {
+                                                TRClass = 'odd';
+                                            }
+
+                                            //var scope = moment(row.income_date).format("DD-MM-YYYY");
+                                           var scope = moment(row.income_date,'MM-DD-YYYY').format("Do MMM, YYYY");
+										   //var scope=row.income_date;
+                                            var amount = parseFloat(row.amount).toFixed(2);
+
+
+
+                                            var text =  row.incometype.charAt(0).toUpperCase() + row.incometype.toLowerCase().slice(1);
+                                          // var text = capitalize(row.incometype);
+
+
+
+                                            ExpenceListing += '<div class="shop_review-list ' + TRClass + '"><div class="list-content"><div class="row"><div class="col s8">';
+                                            ExpenceListing += '<div style="float:left;"><strong>' + text + '</strong></div><div class="clearfix"></div>';
+
+                                            ExpenceListing += '<div style="float:left; font-size:12px;">Rs.' + amount + '</div><div class="clearfix"></div>';
+                                            ExpenceListing += '<div style="float:left; font-size:12px;">' + row.review + '</div><div class="clearfix"></div></div>';
+
+                                            ExpenceListing += '<div class="col s4"><div style="float:right; font-size:12px;">' + scope + '</div><div class="clearfix"></div>';
+                                            ExpenceListing += '<div style="float:right; font-size:12px;"><a style="font-size:20px;" onclick="EditIncome(' + row.income_id + ')"><i class="fa fa-pencil "></i></a>';
+                                            ExpenceListing += '&nbsp;&nbsp;&nbsp;<a style="font-size:20px;" onclick="DeleteIncome(' + row.income_id + ')"><i class="fa fa-trash-o "></i></a></div>';
+
+
+                                            ExpenceListing += ' </div></div></div></div>';
+
+                                            $('#startrow').val(parseInt($('#startrow').val()) + 1);
+                                        }
+                                        if (startrow == 0)
+                                        {
+                                            $("#income_list").html(ExpenceListing);
+                                        }
+                                        else
+                                        {
+                                            $("#income_list").append(ExpenceListing);
+                                        }
+
+                                        $('.TempLoaderClass').remove();
+                                        window.bSuppressScroll = true;
+                                    }
+                                    else
+                                    {
+                                        $("#income_list").html('<center>No Information Available</center>');
+                                    }
+                                }, errorHandler);
+                    }, errorHandler);
+
+                    return;
+                }
+            }
+        </script> 
+        <script type="text/javascript" src="js/jquery.js"></script> 
+
+
+        <script>
+            $(document).ready(function()
+            {
+                window.bSuppressScroll = true;
+                $('body').bind('touchstart', function(e) {
+                    if (window.bSuppressScroll == true)
+                    {
+                        window.bSuppressScroll = false;
+                        ListDBValues();
+
+                    }
+
+
+
+                });
+            });</script> 
+        <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+        <script type="text/javascript" src="js/materialize.min.js"></script> 
+        <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+        <script type="text/javascript" src="js/slick.min.js"></script> 
+        <script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script type="text/javascript" src="js/moment.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/datepicker-custom.css" />
+        <script type="text/javascript">
+            $(function()
+            {
+                $('.dpYears').datepicker({autoclose: true});
+            });
+        </script>
+        <script>
+$("#navigation").load("navigation.html");
+</script>
+    </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Real E State</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body onload="init();">
+<div id="main">
+  <div id="page" style="padding:0px;">
+    <div class="maleo-card signup animated fadeInUp" style=" background-image:url(images/bg.jpg);">
+      <h3 class="maleo-card_title big-title text-center">Expense Manager</h3>
+      <div class="form-content">
+        <p class="app-desc" style="text-align: center; font-size: 17px;">Please Select Your App Modes.</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+          <div class="col-xs-6" style="padding:0px 5px;">
+            <button class="btn-large block margin-bottom" onClick="OnlineMode();" type="button">Online</button>
+          </div>
+          <div class="col-xs-6" style="padding:0px 5px;">
+            <button class="btn-large block margin-bottom" onClick="OfflineMode();" type="button">Offline</button>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="row text-center"><img src="images/logo.png" width="200"> </div>
+        <br>
+        <p class="text-center">© Product of <a href="http://www.aarvitechnology.com" style="text-decoration:none;" target="_blank">Aarvi Technology</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script>
+window.localStorage["ExpenseIncome_APILINK"] = 'http://aarvitech.com/expense-manager/api/';
+if(window.localStorage["ExpenseIncomeLoginMode"] == 'Online')
+{
+	OnlineMode();
+}
+
+if(window.localStorage["ExpenseIncomeLoginMode"] == 'Offline')
+{
+	OfflineMode();
+}
+
+function OnlineMode()
+{
+	location.href='login.html';
+	window.localStorage["ExpenseIncomeLoginMode"] = 'Online';
+}
+
+function OfflineMode()
+{
+	location.href='dashboard.html';
+	window.localStorage["ExpenseIncomeLoginMode"] = 'Offline';
+}
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg alert-modal">
+    <div class="modal-content" style="  padding: 0px;">
+      <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row" style="margin:0px;">
+            <div class=""> <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

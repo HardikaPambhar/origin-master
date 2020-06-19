@@ -1,0 +1,25 @@
+<script>
+window.localStorage["Taxo_LoginId"] = '';
+window.localStorage["Taxo_BrokerId"] = '';
+window.localStorage["Taxo_PartyId"] = '';
+window.localStorage["Taxo_QualityMasterId"] = '';
+location.href='index.html'
+
+if(window.localStorage["Taxo_remember_me"] != "1") 
+{		
+	window.localStorage["Taxo_LoginUserName"] = '';
+	window.localStorage["Taxo_LoginPasseord"] = '';
+}	
+
+window.localStorage["ExpenseIncomeLoginMode"] = '';
+if(window.localStorage["ExpenseIncome_IsRemember"] != "1") 
+{		
+	window.localStorage["ExpenseIncome_UserName"] = '';
+	window.localStorage["ExpenseIncome_Password"] = '';
+}
+
+window.localStorage["ExpenseIncome_DashboardFromDate"]='';
+window.localStorage["ExpenseIncome_DashboardToDate"]='';
+
+location.href='index.html';	
+</script>

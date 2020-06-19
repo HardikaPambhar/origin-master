@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>taxodeal</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body>
+<div id="main">
+  <div id="page" style="padding:0px;">
+    <div class="maleo-card signup animated fadeInUp" style=" background-image:url(images/bg.jpg);">
+      <h3 class="maleo-card_title big-title text-center">Login</h3>
+      <div class="form-content">
+        <div class="row text-center"><img src="images/logo.png" width="200"> </div>
+        <br>
+        <p class="app-desc">Please Enter Your Login Details.</p>
+        <div class="input-field with-icon"><span class="icon"><i class="fa fa-user"></i></span>
+          <input id="login_username" type="text" placeholder="Email Address">
+        </div>
+        <div class="input-field with-icon margin-bottom"><span class="icon"><i class="fa fa-lock"></i></span>
+          <input id="login_password" type="password" placeholder="Password">
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <input type="checkbox" id="remember_me" value="1">
+            <label for="remember_me">Keep Me Logged In</label>
+          </div>
+        </div>
+        <br>
+        <button class="btn-large block margin-bottom" onClick="LoginFun();" type="button">Login</button>
+         <div class="app-desc text-center"><strong> <a style="text-decoration:none; color:#104c7a;font-size:16px;" class="primary-text" href="forgot.html"> Forgot Password?</a></strong></div>
+         <br>
+
+         
+        <div class="app-desc text-center"><strong style="font-size: 18px;">New User?&nbsp; <a style="text-decoration:none; color:#104c7a;" class="primary-text" href="register.html"> Register Now!</a></strong></div>
+        <br>
+        <p class="text-center">© Product of <a href="http://www.aarvitechnology.com" style="text-decoration:none;" target="_blank">Aarvi Technology</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script src="cordova.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+  <script type="text/javascript">
+    app.initialize();
+  </script>
+<script>
+function specificPageFunction() {
+		window.FirebasePlugin.grantPermission(); 
+    }
+$('#login_username').val(window.localStorage["ExpenseIncome_UserName"]);
+$('#login_password').val(window.localStorage["ExpenseIncome_Password"]);
+if(window.localStorage["ExpenseIncome_IsRemember"] == 1 && window.localStorage["ExpenseIncome_UserName"] != '' && window.localStorage["ExpenseIncome_Password"] != '')
+{
+	$("#remember_me").prop("checked",true);
+	//LoginFun();
+}
+
+function LoginFun()
+{
+	var login_username = $('#login_username').val();
+	var login_password = $('#login_password').val();
+	
+	if($('#login_username').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Email Address.");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#login_username').focus();
+		return false;
+	}  
+	
+	if($('#login_username').val() != "" && validateEmail(document.getElementById('login_username')) == false)
+	{
+		$('#MaterialDetail').html("Please Enter Valid Email Address");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#login_username').focus();
+		return false;
+	}
+	
+	if($('#login_password').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Password.");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#login_password').focus();
+		return false;
+	}  
+	
+	$('#loader').show();
+	$.ajax({
+        type       : "GET",
+		url: window.localStorage["ExpenseIncome_APILINK"]+'login.php',
+        crossDomain: true,        
+        data       : {login_username:login_username,login_password:login_password},
+        dataType   : 'json',
+        success    : function(response) 
+		{		
+			 $('#loader').hide();		 
+			 if(response['status']=='1')
+			 {
+				window.localStorage["ExpenseIncome_LoginUserID"] = response['LoginUserID'];
+				window.localStorage["ExpenseIncome_LoginCustomerID"] = response['LoginCustomerID'];
+				 
+				window.localStorage["ExpenseIncome_IsRemember"] = 0;
+				if($("#remember_me").is(":checked"))
+				{
+					window.localStorage["ExpenseIncome_UserName"] = login_username;
+					window.localStorage["ExpenseIncome_Password"] = login_password;
+					window.localStorage["ExpenseIncome_IsRemember"] = 1;
+				}
+				
+				document.location='online-dashboard.html';
+				
+				/*$('#MaterialDetail').html(response['message']);
+				$('#MaterialDetailBox').modal({ show: true});
+				setTimeout(function(){ document.location='online-dashboard.html'; }, 3000);*/
+			 }
+			 else
+			 {
+				 $('#MaterialDetail').html(response['message']);
+				 $('#MaterialDetailBox').modal({ show: true});
+			 }			 
+        },
+        error      : function() 
+		{
+			$('#loader').hide();
+			$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+			$('#MaterialDetailBox').modal({ show: true});
+        }
+    });  	
+	return false;
+}
+
+function validateEmail(email)
+{
+	var re_mail = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z])+$/;
+	if (!re_mail.test(email.value))
+	{
+		return false;
+	}
+	return true;
+}
+
+$("#navigation").load("navigation.html");
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg alert-modal">
+    <div class="modal-content" style="  padding: 0px;">
+      <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row" style="margin:0px;">
+            <div class=""> <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

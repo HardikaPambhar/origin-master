@@ -1,0 +1,71 @@
+<li>
+	<div class="collapsible-header " onClick="location.href = 'dashboard.html'">
+		<a href="index.html"><img src="images/dashboard.png" height="20" />&nbsp;Dashboard <span class="angle-right fa fa-angle-right"></span></a>
+	</div>
+</li>
+<li>
+	<div class="collapsible-header " onClick="location.href = 'to-do.html'"><a href="to-do.html"><img
+				src="images/about.png" height="20" />&nbsp; To Do<span
+				class="angle-right fa fa-angle-right"></span></a></div>
+</li>
+<li>
+	<div class="collapsible-header " onClick="location.href = 'expence.html'"><a href="expence.html"><img
+				src="images/sales.png" height="20" />&nbsp; Expense <span
+				class="angle-right fa fa-angle-right"></span></a></div>
+</li>
+<li>
+	<div class="collapsible-header " onClick="location.href = 'income.html'"><a href="income.html"><img
+				src="images/dispatch.png" height="20" />&nbsp;Income<span
+				class="angle-right fa fa-angle-right"></span></a></div>
+</li>
+<li>
+	<div class="collapsible-header" onClick="location.href = 'expence-type.html'"><a
+			href="expence-type.html"><img src="images/buyer.png" height="20" />&nbsp;Expense Type <span
+				class="angle-right fa fa-angle-right"></span></a></div>
+</li>
+<li>
+	<div class="collapsible-header " onClick="location.href = 'income-type.html'"><a
+			href="income-type.html"><img src="images/broker.png" height="20" />&nbsp;Income Type<span
+				class="angle-right fa fa-angle-right"></span></a></div>
+</li>
+<!--<li>
+	<div class="collapsible-header " onClick="location.href = 'party.html'"><a
+			href="party.html"><img src="images/party.png" height="20" />&nbsp;Party<span
+				class="angle-right fa fa-angle-right"></span></a></div>
+</li>-->
+<!--<li>
+	<div class="collapsible-header " onClick="location.href = 'reminder.html'"><a
+			href="reminder.html"><img src="images/reminder.png" height="20" />&nbsp;Reminder<span
+				class="angle-right fa fa-angle-right"></span></a></div>
+</li>-->
+<!--<li>
+	<div class="collapsible-header" id="share" onClick="shareFunction();">
+		<a href="javascript:;" ><img src="images/share.png"  height="20"/>&nbsp;Share<span class="angle-right fa fa-angle-right"></span></a>
+	</div>
+</li>-->
+<!--<li>
+	<div class="collapsible-header" id="share" >
+		<a href="index.html"><img src="images/taxo.png" height="20"/>&nbsp;Log Out<span class="angle-right fa fa-angle-right"></span></a>
+	</div>
+</li>-->
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript">
+  var options = {
+  message: 'Invite your friends and family member to use our application. Please download from ',
+  subject: 'Refer App',
+  url: 'https://www.aarvitechnology.com/Expense-Manager-App/',
+  chooserTitle: 'Share With',
+};
+var onSuccess = function (result) {
+  console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+  console.log("Shared to app: " + result.app); // On Android result.app since plugin version 5.4.0 this is no longer empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+};
+
+var onError = function (msg) {
+  console.log("Sharing failed with message: " + msg);
+};
+
+function shareFunction() {
+  window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+}
+</script>

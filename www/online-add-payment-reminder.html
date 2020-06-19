@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Add Expence</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body>
+<div id="main">
+  <div id="slide-out-left" class="side-nav">
+    <ul class="collapsible" data-collapsible="accordion" id="navigation">
+    </ul>
+  </div>
+  <div id="page">
+    <div class="top-navbar">
+      <div class="top-navbar-left"><a onClick="history.back()"><i class="fa fa-arrow-left"></i></a></div>
+      <div class="site-title">
+        <h1>Add Payment Reminder</h1>
+      </div>
+    </div>
+    <div class="content-container maleo-shop_checkout">
+      <div class="maleo-card margin-bottom_low animated fadeInUp">
+        <div class="input-field">
+          <div class="input-group">
+            <input type="text" id="party_name" placeholder="Start writing to select Party" />
+            <input type="hidden" id="party_id" value="0" >
+            <span class="input-group-btn"> <a href="javascript:;"  onclick="window.localStorage['Partypage']='online-add-payment-reminder.html'; location.href='online-party.html';"  class="btn btn-primary" style="height:33px;"><i class="fa fa-plus"></i></a> 
+            <!--<a href="online-add-expence-type.html"  class="btn btn-primary" style="height:33px;"><i class="fa fa-plus"></i></a>--> 
+            </span> </div>
+        </div>
+        <div class="input-field">
+          <div class="row">
+            <div class="col-md-10 col-xs-10 col-xs-10">
+              <div data-date-viewmode="years" data-date-format="d-M-yyyy" data-date="" class="input-append date dpYears">
+                <input style="border:1px solid #ccc; height:34px; padding:0px 10px; z-index:0;"  readonly  id="payment_date" name="payment_date" class="form-control" type="text">
+                <span class="input-group-btn add-on">
+                <button class="btn btn-primary" type="button"><i class="fa fa-calendar"></i></button>
+                </span> </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-2">
+              <button style="float:left;" class="btn btn-primary RemoveTabIndexClass" onClick="$('#payment_date').val('');" type="button"><i class="fa fa-times"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="input-field">
+          <input id="amount" type="number" >
+          <label for="amount">Amount</label>
+        </div>
+        <div class="input-field">
+          <textarea id="remark" class="materialize-textarea"></textarea>
+          <label for="remark">Remark</label>
+        </div>
+        <div style="margin: 15px">
+          <input type="checkbox" id="remind_party" >
+          <label for="remind_party">Send Payment Reminder to Party</label>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col s6">
+            <button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="SaveReminderForm();">Save</button>
+          </div>
+          <div class="col s6">
+            <button class="btn btn-primary btn-block animated bounceIn" type="button" onClick="history.back();">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/jquery-ui-1.9.2.custom.min.js"></script>
+<link rel="stylesheet" href="js/jquery-ui.css">
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script type="text/javascript" src="js/moment.js"></script> 
+<script type="text/javascript" charset="utf-8">
+window.localStorage['Partypage']='';
+var startDate = moment().format('DD-MM-YYYY');
+$('#payment_date').val(startDate);
+
+if(window.localStorage["ExMPReminder_PartyName"] != '' && window.localStorage["ExMPReminder_PartyName"] != null)
+{
+	$('#party_name').val(window.localStorage["ExMPReminder_PartyName"]);
+	$('#party_id').val(window.localStorage["ExMPReminder_PartyID"]);
+	window.localStorage["ExMPReminder_PartyName"] = '';
+	window.localStorage["ExMPReminder_PartyID"] = '';
+}
+
+if (window.localStorage["PaymentReminder_id"] > 0)
+{
+	PutQualityFormData();
+}
+										
+function PutQualityFormData()
+{
+	$('#loader').show();
+	$.ajax({
+	type       : "GET",
+	url: window.localStorage["ExpenseIncome_APILINK"]+'get-payment-reminder-details.php',
+	crossDomain: true,        
+	data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],id:window.localStorage["PaymentReminder_id"]},
+	dataType   : 'json',
+	success    : function(response) 
+	{		
+		 $('#loader').hide();	
+		 if(response['status'] == 1)
+		 {
+			$('#party_name').val(response['party_name']);
+			$('#party_id').val(response['party_id']);
+			$('#payment_date').val(response['payment_date']);			
+			$('#amount').val(response['amount']);
+			$('#remark').val(response['remark']);			
+			$('#party_name').focus();
+			$('#amount').focus();
+			$('#remark').focus();
+			
+			if(response['remind_party'] == 1)
+			 {
+				 $("#remind_party").prop("checked" , true);
+			 }
+			 else
+			 {
+				 $("#remind_party").prop("checked" , false);
+			 }
+		 }
+		 if(response['status'] == 0)
+		 {
+			 $('#MaterialDetail').html(response['message']);
+		 	 $('#MaterialDetailBox').modal({ show: true});	
+		 }
+	},
+	error      : function() 
+	{
+		$('#loader').hide();
+		$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+		$('#MaterialDetailBox').modal({ show: true});
+	}
+	});
+}
+
+function SaveReminderForm()
+{
+
+	if ($('#party_id').val() == '0' || $('#party_id').val() == '')
+	{
+		$('#MaterialDetail').html("Please Enter Party.");
+		$('#MaterialDetailBox').modal({show: true});
+		$('#party_name').focus();
+		return false;
+	}
+
+	if ($('#payment_date').val() == '')
+	{
+		$('#MaterialDetail').html("Please Select Date.");
+		$('#MaterialDetailBox').modal({show: true});
+		$('#payment_date').focus();
+		return false;
+	}
+	if ($('#amount').val() == '')
+	{
+		$('#MaterialDetail').html("Please Enter Amount.");
+		$('#MaterialDetailBox').modal({show: true});
+		$('#amount').focus();
+		return false;
+	}
+	
+	var remind_party = 0;
+	if($("#remind_party").is(":checked"))
+	{
+		var remind_party = 1;
+	}
+	
+	$('#loader').show();
+	$.ajax({
+	type       : "GET",
+	url: window.localStorage["ExpenseIncome_APILINK"]+'modify-payment-reminder-details.php',
+	crossDomain: true,        
+	data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],id:window.localStorage["PaymentReminder_id"],party_id:$('#party_id').val(),payment_date:$('#payment_date').val(),amount:$('#amount').val(),remark:$('#remark').val(),remind_party:remind_party},
+	dataType   : 'json',
+	success    : function(response) 
+	{		
+		 $('#loader').hide();	
+		 
+		 if(response['status'] == 1)
+		 { 
+		    window.localStorage["ExpenseIncome_Success_Msg"] = response['message'];
+			location.href = 'online-payment-reminder.html';
+			//setTimeout(function(){location.href = 'online-payment-reminder.html';}, 4000); 
+		 }
+		 else
+		 {
+			 $('#MaterialDetail').html(response['message']);
+		     $('#MaterialDetailBox').modal({ show: true});	
+		 }
+	},
+	error      : function() 
+	{
+		$('#loader').hide();
+		$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+		$('#MaterialDetailBox').modal({ show: true});
+	}
+	});
+}
+
+$(function()
+{
+	$( "#party_name" ).autocomplete({
+    minLength: 0,
+    source: function( request, response ) {
+		$("#party_id").val(0);
+		var term = request.term;
+		$.getJSON( window.localStorage["ExpenseIncome_APILINK"]+'party-list-box.php?UserID='+window.localStorage["ExpenseIncome_LoginUserID"]+'&CustomerID='+window.localStorage["ExpenseIncome_LoginCustomerID"], request, function( data, status, xhr )
+		{
+			data = data['details'];
+			response( data );
+		});
+    },
+	focus: function( event, ui ) {
+		$("#party_id").val( ui.item.party_id );
+		$("#party_name").val( ui.item.party_name );
+		return false;
+	},
+	blur: function( event, ui )
+	{
+		$("#party_id").val( ui.item.party_id );
+		$("#party_name").val( ui.item.party_name );
+		return false;
+	},
+	select: function( event, ui )
+	{
+		$("#party_id").val( ui.item.party_id );
+		$("#party_name").val( ui.item.party_name );
+		return false;
+	}
+	})
+	.data('autocomplete')._renderItem = function( ul, item )
+	{
+		return $( "<li></li>" )
+		.data( "item.autocomplete", item )
+		.append( "<a>" + item.party_name+"</a>" )
+		.appendTo( ul );
+	};
+});
+
+</script> 
+<script>
+$("#navigation").load("online-navigation.html");
+$('#loader').show();
+$.ajax({
+type       : "GET",
+url: window.localStorage["ExpenseIncome_APILINK"]+'navigation.php',
+crossDomain: true,        
+data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"]},
+dataType   : 'json',
+success    : function(response) 
+{		
+	 $('#loader').hide();		 
+	 $("#navigation").html(response['Navigation']);
+},
+error      : function() 
+{
+	$('#loader').hide();
+	$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+	$('#MaterialDetailBox').modal({ show: true});
+}
+});
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg alert-modal">
+    <div class="modal-content" style="  padding: 0px;">
+      <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row" style="margin:0px;">
+            <div class=""> <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="css/datepicker-custom.css" />
+<script type="text/javascript">
+	$(function()
+	{
+		$('.dpYears').datepicker({format: "dd-mm-yyyy", autoclose: true, setDate: new Date()}); //,endDate: '+0d'
+	});
+</script>
+</body>
+</html>

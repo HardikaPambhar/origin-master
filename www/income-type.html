@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Real Estate</title>
+        <meta charset="utf-8">
+        <meta content="IE=edge" http-equiv="x-ua-compatible">
+        <meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="yes" name="apple-touch-fullscreen">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/responsive.css">
+        <link rel="shortcut icon" href="images/favicon.png">
+    </head>
+    <body onLoad="ListDBValues();">
+        <div id="main">
+            <div id="slide-out-left" class="side-nav">
+                <ul class="collapsible" data-collapsible="accordion" id="navigation">
+
+
+                </ul>
+            </div>
+            <div id="page">
+                <div class="top-navbar">
+                    <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i class="fa fa-bars"></i></a></div>
+                    <div class="top-navbar-right">
+                        <a data-toggle="collapse" class="pull-right btn-default" data-target="#income" href="#income" style=" margin-left:15px;"><i class="fa fa-filter"></i></a> <a href="javascript:;"  onclick="window.localStorage['page']='income-type.html'; location.href='add-income-type.html';" class="pull-right  btn-default" style="text-decoration:none;"><i class="fa fa-plus"></i> Add</a>
+                    </div>
+
+
+                    <div class="site-title">
+                        <h1>Income Type</h1>
+                    </div>
+                </div>
+                <div class="content-container">
+                    <div class="maleo-card product-single animated fadeInUp maleo-shop_checkout">
+                        <div id="income" class="collapse">
+                            <div class="input-group" style="margin:5px;">
+                                <input style="border:1px solid #ccc; height:34px; padding:0px 10px; z-index:0;" class=" form-control" type="text" id="IncomeSearch">
+                                <span class="input-group-btn">            
+                                    <button class="btn btn-primary" onClick="$('#startrow').val('0');
+                                            ListDBValues();"><i class="fa fa-search"></i></button>
+                                    <button class="btn btn-primary" onClick="location.href = 'income-type.html'"><i class="fa fa-times"></i></button>
+                                    <input type="hidden" name="startrow" id="startrow" value="0" />
+                                    <input type="hidden" name="totalrow" id="totalrow" value="1"/>
+                                </span> </div>
+
+                        </div>
+                        <div class="product-content">
+                            <div class="tab-content" id="IncomeList">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+            </div>
+        </div>
+        <script type="text/javascript" charset="utf-8">
+            var db;
+            var shortName = 'IncomeExpence';
+            var version = '1.0';
+            var displayName = 'IncomeExpence';
+            var maxSize = 65535;
+            window.localStorage["Income_id"] = 0;
+            function errorHandler(transaction, error)
+            {
+                alert('Error: ' + error.message + ' code: ' + error.code);
+            }
+            function EditIncome(id)
+            {
+                window.localStorage["Income_id"] = id;
+                location.href = 'add-income-type.html';
+            }
+            function AddIncome()
+            {
+                window.localStorage["Income_id"] = '';
+                location.href = 'add-income-type.html';
+            }
+
+            function DeleteIncome(id)
+            {
+                if (confirm("Are you sure you want to delete this income type?"))
+                {
+                    db.transaction(function(transaction)
+                    {
+                        transaction.executeSql("Delete from incometype WHERE id = '" + id +"'", []);
+                    });
+					setTimeout(function(){location.href = 'income-type.html';}, 1000); 
+                    //location.href = 'income-type.html';
+                }
+            }
+            function ListDBValues()
+            {
+
+                var totalrow = parseInt($('#totalrow').val());
+                var startrow = parseInt($('#startrow').val());
+                if (!window.openDatabase)
+                {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                db = openDatabase(shortName, version, displayName, maxSize);
+                db.transaction(function(tx)
+                {
+                    //tx.executeSql('drop table Income type');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS incometype(id INTEGER NOT NULL PRIMARY KEY,incometype TEXT NOT NULL)');
+                });
+                if (totalrow > startrow && totalrow != 0)
+                {
+
+                    if (startrow == 0)
+                    {
+                        $("#IncomeList").html("<strong>loading..........</strong>");
+                    }
+                    else
+                    {
+                        $("#IncomeList").append("<li class='TempLoaderClass'><strong>loading..........</strong></li>");
+                    }
+                    var PartyListing = '';
+                    db.transaction(function(transaction)
+                    {
+
+                        where = '';
+                        if ($('#IncomeSearch').val() != '')
+                        {
+                            where = ' where incometype like "' + $('#IncomeSearch').val() + '%" ';
+                        }
+
+                        transaction.executeSql('SELECT * FROM incometype ' + where + ' ;', [],
+                                function(transaction, Total)
+                                {
+
+                                    if (Total != null && Total.rows != null && Total.rows.length > 0)
+                                    {
+                                        $('#totalrow').val(Total.rows.length);
+                                    }
+                                    else
+                                    {
+                                        $("#IncomeList").html('<center>No Information Available</center>');
+                                    }
+                                }, errorHandler);
+
+                        transaction.executeSql('SELECT * FROM incometype it left join income ic on it.id = ic.income_master_id  ' + where + ' GROUP BY it.id ORDER BY it.id DESC LIMIT ' + startrow + ',10;', [],
+                                function(transaction, result)
+                                {
+                                    if (result != null && result.rows != null && result.rows.length > 0)
+                                    {
+                                        for (var i = 0; i < result.rows.length; i++)
+                                        {
+                                            var row = result.rows.item(i);
+
+                                            var text = row.incometype.charAt(0).toUpperCase() + row.incometype.toLowerCase().slice(1);
+                                            //var text = capitalize(row.incometype);
+
+                                            TRClass = '';
+                                            if (i % 2 == 0)
+                                            {
+                                                TRClass = 'odd';
+                                            }
+
+                                            PartyListing += '<div class="shop_review-list ' + TRClass + '" style="    padding: 13px 20px;"><div class="row">';
+                                            if (row.party_name != '')
+                                            {
+                                                PartyListing += '<div class="col s8"><div><strong>' + text + '</strong></div></div>';
+                                            }
+
+                                            PartyListing += '<div class="col s4"><div style="float:right;"><a style="font-size:22px;" onclick="EditIncome(' + row.id + ')"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;\n';
+
+
+                                            if (row.income_master_id == null) {
+
+
+                                                PartyListing += '<a style="font-size:22px;" onclick="DeleteIncome(' + row.id + ')"><i class="fa fa-trash"></i></a>';
+
+                                            }
+
+
+                                            PartyListing += '</div></div></div></div>';
+                                            $('#startrow').val(parseInt($('#startrow').val()) + 1);
+                                        }
+
+                                        if (startrow == 0)
+                                        {
+                                            $("#IncomeList").html(PartyListing);
+                                        }
+                                        else
+                                        {
+                                            $("#IncomeList").append(PartyListing);
+                                        }
+
+                                        $('.TempLoaderClass').remove();
+                                        window.bSuppressScroll = true;
+                                    }
+                                    else
+                                    {
+                                        $("#IncomeList").html('<center>No Information Available</center>');
+                                    }
+                                }, errorHandler);
+                    }, errorHandler);
+                    return;
+                }
+            }
+        </script>
+        <script type="text/javascript" src="js/jquery.js"></script> 
+        <script>
+            $(document).ready(function()
+            {
+                window.bSuppressScroll = true;
+                $('body').bind('touchstart', function(e) {
+                    if (window.bSuppressScroll == true)
+                    {
+                        window.bSuppressScroll = false;
+                        ListDBValues();
+                    }
+
+
+
+
+                });
+            });</script>  
+        <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+        <script type="text/javascript" src="js/materialize.min.js"></script> 
+        <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+        <script type="text/javascript" src="js/slick.min.js"></script> 
+        <script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script>
+            $("#navigation").load("navigation.html");
+        </script>
+    </body>
+</html>

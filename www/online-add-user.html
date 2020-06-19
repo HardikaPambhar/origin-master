@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Income-Expence</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body>
+<div id="main">
+  <div id="page" style="padding:0px;">
+    <div class="top-navbar">
+      <div class="top-navbar-left"><a href="#" onClick="history.back()"><i class="fa fa-arrow-left"></i></a></div>
+      <div class="site-title">
+        <h1>Add User</h1>
+      </div>
+    </div>
+    <div class="maleo-card signup animated fadeInUp" style=" background-image:url(images/bg.jpg);">
+      <div class="" style="margin-top: 40px;">
+        <form class="col s12 " id="FormID" onsubmit="return false;">
+          <div id="main">
+            <div id="page" style="padding:0px;">
+              <div class="maleo-card signup animated fadeInUp" style=" background-image:url(images/bg.jpg);">
+                <div class="form-content">
+                  <div class="input-field with-icon"><span class="icon"><i class="fa fa-user"></i></span>
+                    <input id="user_fullname" type="text">
+                    <label for="user_fullname">Name</label>
+                  </div>
+                  <div class="input-field with-icon"><span class="icon"><i class="fa fa-envelope"></i></span>
+                    <input id="user_name" type="email">
+                    <label for="user_name">Email</label>
+                  </div>
+                  <div class="input-field with-icon PasswordClass"><span class="icon"><i class="fa fa-envelope"></i></span>
+                    <input id="password" type="password">
+                    <label for="password">Password</label>
+                  </div>
+                  <div class="input-field with-icon"><span class="icon"><i class="fa fa-envelope"></i></span>
+                    <input id="user_mobile" type="text">
+                    <label for="user_mobile">Mobile</label>
+                  </div>
+                  <div class="ActiveChkClass" style="margin: 15px; display:none;">
+                    <input id="is_active" type="checkbox">
+                    <label for="is_active">Is Active?</label>
+                  </div>
+                  <button class="btn-large block margin-bottom" onClick="SavePartyForm();" type="button">Save</button>
+                  <div class="app-desc text-center"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="app-desc text-center"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script type="text/javascript" charset="utf-8">
+if(window.localStorage["User_Id"] != 0)
+{
+	GetPartyDetails();
+	$('.PasswordClass').hide();
+}
+
+function GetPartyDetails()
+{
+	$('#loader').show();
+	$.ajax({
+        type       : "GET",
+		url: window.localStorage["ExpenseIncome_APILINK"]+'get-user-details.php',
+        crossDomain: true,        
+        data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],id:window.localStorage["User_Id"]},
+        dataType   : 'json',
+        success    : function(response) 
+		{		
+			 $('#loader').hide();		 
+			 $('#user_fullname').val(response['user_fullname']);
+			 $('#user_name').val(response['user_name']);
+			 $('#user_mobile').val(response['user_mobile']);
+			 if(response['allow_to_change_status'] == 1)
+			 {
+				 $('.ActiveChkClass').show();
+			 }
+			 else
+			 {
+				 $('.ActiveChkClass').hide();
+			 }
+			 
+			 if(response['is_active'] == 1)
+			 {
+				 $("#is_active").prop("checked" , true);
+			 }
+			 else
+			 {
+				 $("#is_active").prop("checked" , false);
+			 }
+			 
+			 $('#user_fullname').focus();
+			 $('#user_name').focus();	
+			 $('#user_mobile').focus();	
+			 //$('.ActiveClass').show();		  
+        },
+        error      : function() 
+		{
+			$('#loader').hide();
+			$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+			$('#MaterialDetailBox').modal({ show: true});
+        }
+    });  	
+}
+
+function SavePartyForm() 
+{ 
+	if($('#user_fullname').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Name.");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#user_fullname').focus();
+		return false;
+	}  
+	if($('#user_name').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Email Address.");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#user_name').focus();
+		return false;
+	}  
+	if($('#user_name').val() != "" && validateEmail(document.getElementById('user_name')) == false)
+	{
+		$('#MaterialDetail').html("Please Enter Valid Email Address");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#user_name').focus();
+		return false;
+	}
+	
+	if((window.localStorage["User_Id"] == 0 || window.localStorage["User_Id"] == '') && $('#password').val()=='')
+	{
+		$('#MaterialDetail').html("Please Enter Password");
+		$('#MaterialDetailBox').modal({ show: true});
+		$('#password').focus();
+		return false;
+	}
+	
+	var is_active = 0;
+	if($("#is_active").is(":checked"))
+	{
+		var is_active = 1;
+	}
+	
+	//alert($('#user_mobile').val());
+	$('#loader').show();
+	$.ajax({
+        type       : "GET",
+		url: window.localStorage["ExpenseIncome_APILINK"]+'modify-user-details.php',
+        crossDomain: true,        
+        data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],user_fullname:$('#user_fullname').val(),user_mobile:$('#user_mobile').val(),user_name:$('#user_name').val(),password:$('#password').val(),is_active:is_active,id:window.localStorage["User_Id"]},
+        dataType   : 'json',
+        success    : function(response) 
+		{		
+			 $('#loader').hide();		 
+			 if(response['status']=='1')
+			 {
+				window.localStorage["ExpenseIncome_Success_Msg"] = response['message'];
+				document.location='online-user.html';
+				//setTimeout(function(){ document.location='online-user.html'; }, 3000);
+			 }
+			 else
+			 {
+				 $('#MaterialDetail').html(response['message']);
+				 $('#MaterialDetailBox').modal({ show: true});
+			 }			 
+        },
+        error      : function() 
+		{
+			$('#loader').hide();
+			$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+			$('#MaterialDetailBox').modal({ show: true});
+        }
+    });  	
+}
+
+function validateEmail(email)
+{
+	var re_mail = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z])+$/;
+	if (!re_mail.test(email.value))
+	{
+		return false;
+	}
+	return true;
+}
+
+$("#navigation").load("online-navigation.html");
+$('#loader').show();
+$.ajax({
+type       : "GET",
+url: window.localStorage["ExpenseIncome_APILINK"]+'navigation.php',
+crossDomain: true,        
+data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"]},
+dataType   : 'json',
+success    : function(response) 
+{		
+	 $('#loader').hide();		 
+	 $("#navigation").html(response['Navigation']);
+},
+error      : function() 
+{
+	$('#loader').hide();
+	$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+	$('#MaterialDetailBox').modal({ show: true});
+}
+});
+</script>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row">
+            <div class="col-lg-12">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

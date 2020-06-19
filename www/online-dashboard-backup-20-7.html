@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>taxodeal</title>
+<meta charset="utf-8">
+<!--        <meta content="IE=edge" http-equiv="x-ua-compatible">-->
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<!--        <meta content="yes" name="apple-touch-fullscreen">-->
+<!--        <link rel="stylesheet" type="text/css" href="css/AdminLTE.css">-->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+<link rel="shortcut icon" href="images/favicon.png">
+<style>
+.info-box {
+	display: block;
+	min-height: 90px;
+	background: #fff;
+	width: 92%;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	border-radius: 2px;
+	margin: 15px auto 0px auto;
+	box-sizing: border-box;
+}
+.bg-aqua, .callout.callout-info, .alert-info, .label-info, .modal-info .modal-body {
+	background-color: #00c0ef !important;
+	color: #fff;
+}
+.info-box-icon {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 2px;
+	display: block;
+	float: left;
+	height: 90px;
+	width: 90px;
+	text-align: center;
+	font-size: 45px;
+	line-height: 90px;
+	background: rgba(0, 0, 0, 0.2);
+}
+.info-box-content {
+	padding: 5px 10px;
+	margin-left: 90px;
+}
+.progress-description, .info-box-text {
+	display: block;
+	font-size: 13px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.info-box-number {
+	display: block;
+	font-weight: bold;
+	font-size: 15px;
+}
+.table-hover>tbody>tr:hover>th {
+	background-color: #3c6489;
+}
+</style>
+</head>
+
+<body onLoad="ListDBValues();">
+<div id="slide-out-left" class="side-nav">
+  <ul class="collapsible" data-collapsible="accordion" id="navigation">
+  </ul>
+</div>
+<div id="page">
+  <div class="top-navbar">
+    <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i
+                            class="fa fa-bars"></i></a></div>
+    <div class="site-title">
+      <h1>Dashboard</h1>
+    </div>
+  </div>
+</div>
+<section class="content"> 
+  <!-- Small boxes (Stat box) -->
+  
+  <div class="content-container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box"> <a class="info-box-icon bg-aqua" href="online-expence.html"><img src="images/expence.png" width="50" alt="" /></a>
+          <div class="info-box-content"> <a href="online-add-expence.html" style="float: right; font-size: 22px;"><i
+                                        class="fa fa-plus-circle"></i></a> <a  href="online-expence.html" style="text-decoration: none"> <span class="info-box-number">Expense</span> <span class="info-box-text" id="first"><strong>Total: </strong><span class="ExTotalClass"> </span></span> <span class="info-box-text" id="firstthism"><strong>This Month: </strong> <span class="ExMonthClass"> </span></span> <span class="info-box-text" id="firsttoday"><strong>Today: </strong> <span class="ExTodayClass"> </span></span></a> </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box"> <a class="info-box-icon bg-aqua" href="online-income.html"><img src="images/income.png" width="55"
+                                                                                     alt="" /></a>
+          <div class="info-box-content"> <a href="online-add-income.html" style="float: right; font-size: 22px;"><i
+                                        class="fa fa-plus-circle"></i> </a> <a  href="online-income.html" style="text-decoration: none"> <span class="info-box-number">Income</span> <span class="info-box-text" id="first1"><strong>Total: </strong> <span class="IncomeTotalClass"> </span></span> <span class="info-box-text" id="firstthism1"><strong>This Month: </strong><span class="IncomeMonthClass"> </span> </span> <span class="info-box-text" id="firsttoday1"><strong>Today: </strong><span class="IncomeTodayClass"> </span> </span></a> </div>
+          
+          <!-- /.info-box-content --> 
+        </div>
+        <!-- /.info-box --> 
+      </div>
+      <!-- /.col --> 
+      
+      <!-- fix for small devices only -->
+      <div class="clearfix visible-sm-block"></div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box"> <a class="info-box-icon bg-aqua" href="online-to-do.html"><img src="images/todo.png" width="50"
+                                                                                    alt="" /></a>
+          <div class="info-box-content"> <a href="online-to-do.html" style="float: right; font-size: 22px;"><i
+                                        class="fa fa-plus-circle"></i> </a> <a  href="online-to-do.html" style="text-decoration: none"> <span class="info-box-number">To Do</span> <span><strong>Total: </strong></span><span class="ToDoTotalClass"> </span></a> </div>
+          
+          <!-- /.info-box-content --> 
+        </div>
+        <!-- /.info-box --> 
+      </div>
+      <!-- /.col --> 
+      
+    </div>
+  </div>
+  <script type="text/javascript" src="js/jquery.js"></script> 
+  <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+  <script type="text/javascript" src="js/materialize.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+  <script type="text/javascript" src="js/slick.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+  <script type="text/javascript" src="js/custom.js"></script> 
+  <script type="text/javascript" charset="utf-8">
+function ListDBValues() 
+{
+	$('#loader').show();
+	$.ajax({
+        type       : "GET",
+		url: window.localStorage["ExpenseIncome_APILINK"]+'dashboard.php',
+        crossDomain: true,        
+        data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"]},
+        dataType   : 'json',
+        success    : function(response) 
+		{		
+			 $('#loader').hide();		 
+			 if(response['status']=='1')
+			 {
+				$('.ExTotalClass').html(response['TotalExpense']);
+				$('.ExMonthClass').html(response['MonthExpense']);
+				$('.ExTodayClass').html(response['TodayExpense']);
+				
+				$('.IncomeTotalClass').html(response['TotalIncome']);
+				$('.IncomeMonthClass').html(response['MonthIncome']);
+				$('.IncomeTodayClass').html(response['TodayIncome']);
+				
+				$('.ToDoTotalClass').html(response['TotalTodo']);
+			 }
+			 else
+			 {
+				 $('#MaterialDetail').html(response['message']);
+				 $('#MaterialDetailBox').modal({ show: true});
+			 }			 
+        },
+        error      : function() 
+		{
+			$('#loader').hide();
+			$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+			$('#MaterialDetailBox').modal({ show: true});
+        }
+    });
+}
+</script> 
+</section>
+<!--<script type="text/javascript" src="cordova.js"></script>--> 
+
+<script>
+$("#navigation").load("online-navigation.html");
+$('#loader').show();
+$.ajax({
+type       : "GET",
+url: window.localStorage["ExpenseIncome_APILINK"]+'navigation.php',
+crossDomain: true,        
+data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"]},
+dataType   : 'json',
+success    : function(response) 
+{		
+	 $('#loader').hide();		 
+	 $("#navigation").html(response['Navigation']);
+},
+error      : function() 
+{
+	$('#loader').hide();
+	$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+	$('#MaterialDetailBox').modal({ show: true});
+}
+});
+</script> 
+<script type="text/javascript" src="js/ads.js"></script> 
+<script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+app.initialize();
+</script> 
+<script>
+function specificPageFunction() {
+      window.FirebasePlugin.onTokenRefresh(function (token) {
+        // alert(token);
+		 SetUserToken(token); 
+       /* $.ajax({
+          type: "POST",
+          url: 'http://socjoi.com/api/notification-token-api.php?account_id=' + window.localStorage["Socjoi_AccountId"] + '&account_code=' + window.localStorage["Socjoi_AccountCode"],
+          crossDomain: true,
+          data: { member_id: localStorage.SOCJOI_LOGIN_ID, family_member_id: localStorage.Socjoi_Family_Mem_ID, token: token },
+          dataType: 'json',
+          success: function (response) {
+            // alert('Token ' + response.fcm_token);
+          },
+          error: function () {
+
+          }
+        });*/
+      }, function (error) {
+        alert("error:"+error);
+      });
+    }
+	
+function SetUserToken(token) 
+{
+	$('#loader').show();
+	$.ajax({
+        type       : "GET",
+		url: window.localStorage["ExpenseIncome_APILINK"]+'save-token.php',
+        crossDomain: true,        
+        data       : {UserID:window.localStorage["ExpenseIncome_LoginUserID"],CustomerID:window.localStorage["ExpenseIncome_LoginCustomerID"],token:token},
+        dataType   : 'json',
+        success    : function(response) 
+		{		
+			 $('#loader').hide();		 
+			 /*$('#MaterialDetail').html(response['message']);
+			 $('#MaterialDetailBox').modal({ show: true});	*/	 
+        },
+        error      : function() 
+		{
+			$('#loader').hide();
+			$('#MaterialDetail').html("You are not connected to internet. Please try again.");
+			$('#MaterialDetailBox').modal({ show: true});
+        }
+    });
+}
+</script>
+<strong></strong>
+<div class="modal fade bs-example-modal-lg" style="z-index:1111;" id="MaterialDetailBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg alert-modal">
+    <div class="modal-content" style="  padding: 0px;">
+      <div class="modal-icon"><i class="fa fa-info-circle"></i></div>
+      <div class="modal-body">
+        <div class="input-block">
+          <div class="row" style="margin:0px;">
+            <div class=""> <span id="MaterialDetail"></span> </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-btn"><a style="font-size: 20px; color: #fff;" type="" class="" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

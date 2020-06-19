@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Real Estate</title>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="x-ua-compatible">
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+</head>
+<body onLoad="ListDBValues();">
+<div id="main">
+  <div id="slide-out-left" class="side-nav">
+    <ul class="collapsible" data-collapsible="accordion" id="navigation">
+    </ul>
+  </div>
+  <div id="page">
+    <div class="top-navbar">
+      <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i class="fa fa-bars"></i></a></div>
+      <div class="site-title">
+        <h1>To Do </h1>
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="maleo-card product-single animated fadeInUp maleo-shop_checkout">
+        <div class="product-content">
+          <div class="tab-content">
+            <div class="maleo-card animated fadeInUp">
+              <div class="input-group" style="margin: 5px;">
+                <input type="text" class="form-control" id="todo_item" style="border: 1px solid #ccc;
+                                               height: 45px; font-size: 18px; padding: 5px 10px;box-sizing: border-box;">
+                <span class="input-group-btn">
+                <button class="btn btn-primary animated bounceIn" type="button" onclick="SaveQualityForm();">Add</button>
+                <input type="hidden" name="startrow" id="startrow" value="0" />
+                <input type="hidden" name="totalrow" id="totalrow" value="1"/>
+                </span> </div>
+            </div>
+            <div class="maleo-card animated fadeInUp" id="todo_list"> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="to-top" class="main-bg"><i class="fa fa-chevron-up"></i></div>
+  </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+            var db;
+            var shortName = 'IncomeExpence';
+            var version = '1.0';
+            var displayName = 'IncomeExpence';
+            var maxSize = 65535;
+            window.localStorage["To_Do"] = 0;
+            function errorHandler(transaction, error)
+            {
+                alert('Error: ' + error.message + ' code: ' + error.code);
+            }
+
+            function AddToDo()
+            {
+                window.localStorage["To_Do"] = '';
+                //location.href = 'add-income-type.html';
+            }
+
+            function DeleteToDo(id)
+            {
+                if (confirm("Are you sure you want to delete this to do?"))
+                {
+                    db.transaction(function(transaction)
+                    {
+                        transaction.executeSql("delete from todo WHERE todo_id = '" + id + "'", [] , function(){} , errorHandler);
+                    }, errorHandler);
+					
+					//alert(id);
+					//alert("delete from todo WHERE todo_id = '" + id + "'");
+					setTimeout(function(){location.href = 'to-do.html';}, 1000); 
+                    //location.href = 'to-do.html';
+                }
+            }
+            function ListDBValues()
+            {
+                var totalrow = parseInt($('#totalrow').val());
+                var startrow = parseInt($('#startrow').val());
+                
+
+
+                if (!window.openDatabase)
+                {
+                    alert('Databases are not supported in this browser.');
+                    return;
+                }
+                db = openDatabase(shortName, version, displayName, maxSize);
+
+                db.transaction(function(tx)
+                {
+
+                    // tx.executeSql('DROP TABLE todo');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS todo(todo_id INTEGER NOT NULL PRIMARY KEY,todo_item TEXT NOT NULL,status INTEGER,todo_date date )');
+
+
+                });
+
+                if (totalrow > startrow && totalrow != 0)
+                {
+
+                    if (startrow == 0)
+                    {
+                        $("#todo_list").html("<strong>loading..........</strong>");
+                    }
+                    else
+                    {
+                        $("#todo_list").append("<li class='TempLoaderClass'><strong>loading..........</strong></li>");
+                    }
+
+                    db.transaction(function(transaction)
+                    {
+
+                        PartyListing = '';
+
+
+                        transaction.executeSql('SELECT * FROM todo  group by todo_id  ORDER BY todo_id DESC;', [],
+                                function(transaction, result)
+                                {
+                                    if (result != null && result.rows != null && result.rows.length > 0)
+                                    {
+                                        for (var i = 0; i < result.rows.length; i++)
+                                        {
+                                            var row = result.rows.item(i);
+
+
+                                            TRClass = '';
+                                            if (i % 2 == 0)
+                                            {
+                                                TRClass = 'odd';
+                                            }
+                                            
+                                           var text =  row.todo_item.charAt(0).toUpperCase() + row.todo_item.toLowerCase().slice(1);
+                                            //var text = capitalize(row.todo_item);
+                                            
+                                            var scope = moment(row.todo_date,'MM-DD-YYYY').format("Do MMM, YYYY");
+                                            //var scope = moment(row.todo_date).format("DD-MM-YYYY");
+                                            PartyListing += '<div class="shop_review-list ' + TRClass + '">';
+
+                                            PartyListing += '<div>';
+                                            if (row.status == 1) {
+                                                PartyListing += '<input type="checkbox" onclick="check(' + row.todo_id + ');" id="todo' + row.todo_id + '"  checked>';
+                                            } else {
+                                                PartyListing += '<input type="checkbox" onclick="check(' + row.todo_id + ');" id="todo' + row.todo_id + '">';
+                                            }
+
+
+                                            PartyListing += '<label style=" width: 91%;" for="todo' + row.todo_id + '">' + text + '</label><span  style="color:#074c7a; float: right; font-size: 25px;line-height: 23px; position:relative; right: -10px;" onclick="DeleteToDo(' + row.todo_id + ')"><i class="fa fa-trash"></i></span><div class="clearfix"></div><span style="float:right;font-size:12px;    position: relative; right: -12px; top: -4px;">' + scope + '</span></div></div>';
+
+
+                                        }
+
+
+                                        if (startrow == 0)
+                                        {
+                                            $("#todo_list").html(PartyListing);
+                                        }
+                                        else
+                                        {
+                                            $("#todo_list").append(PartyListing);
+                                        }
+
+
+                                        $('.TempLoaderClass').remove();
+
+                                        window.bSuppressScroll = false;
+                                    }
+                                    else
+                                    {
+                                        $("#todo_list").html('<center>No Information Available</center>');
+                                    }
+                                }, errorHandler);
+                    }, errorHandler);
+
+                    return;
+
+                }
+            }
+            function SaveQualityForm()
+            {
+                var startDate = moment().format('MM-DD-YYYY');
+
+                if ($('#todo_item').val() == '')
+                {
+                    $('#MaterialDetail').html("Please Enter Income Type.");
+                    $('#MaterialDetailBox').modal({show: true});
+                    $('#todo_item').focus();
+                    return false;
+                }
+
+                db.transaction(function(transaction)
+                {
+                    transaction.executeSql('INSERT INTO todo (todo_item,todo_date,status) VALUES (?,?,?)', [$('#todo_item').val(), startDate,0]);
+                    location.href = 'to-do.html';
+
+                });
+            }
+
+            function check(id) {
+                if ($('#todo' + id).is(':checked')) {
+                    db.transaction(function(transaction)
+                    {
+                        var executeQuery = 'update todo SET status   = ? WHERE todo_id = ?';
+                        transaction.executeSql(executeQuery, [1, id]);
+
+
+                    });
+                }
+                else {
+                    db.transaction(function(transaction)
+                    {
+                        var executeQuery = 'update todo SET status   = ? WHERE todo_id = ?';
+                        transaction.executeSql(executeQuery, [0, id]);
+
+
+                    });
+                }
+            }
+        </script> 
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script>
+            $(document).ready(function()
+            {
+                window.bSuppressScroll = false;
+                $('body').bind('touchstart', function(e) {
+                    if (window.bSuppressScroll == false)
+                    {
+                        window.bSuppressScroll = true;
+                        ListDBValues();
+                    }
+                });
+            }
+            );
+        </script> 
+<script>
+$("#navigation").load("navigation.html");
+</script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script> 
+<script type="text/javascript" src="js/materialize.min.js"></script> 
+<script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+<script type="text/javascript" src="js/slick.min.js"></script> 
+<script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+<script type="text/javascript" src="js/custom.js"></script> 
+<script type="text/javascript" src="js/moment.js"></script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>taxodeal</title>
+<meta charset="utf-8">
+<!--        <meta content="IE=edge" http-equiv="x-ua-compatible">-->
+<meta content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<!--        <meta content="yes" name="apple-touch-fullscreen">-->
+<!--        <link rel="stylesheet" type="text/css" href="css/AdminLTE.css">-->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/responsive.css">
+<link rel="shortcut icon" href="images/favicon.png">
+<link rel="shortcut icon" href="images/favicon.png">
+<style>
+.info-box {
+	display: block;
+	min-height: 90px;
+	background: #fff;
+	width: 92%;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	border-radius: 2px;
+	margin: 15px auto 0px auto;
+	box-sizing: border-box;
+}
+.bg-aqua, .callout.callout-info, .alert-info, .label-info, .modal-info .modal-body {
+	background-color: #00c0ef !important;
+	color: #fff;
+}
+.info-box-icon {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 2px;
+	display: block;
+	float: left;
+	height: 90px;
+	width: 90px;
+	text-align: center;
+	font-size: 45px;
+	line-height: 90px;
+	background: rgba(0, 0, 0, 0.2);
+}
+.info-box-content {
+	padding: 5px 10px;
+	margin-left: 90px;
+}
+.progress-description, .info-box-text {
+	display: block;
+	font-size: 13px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.info-box-number {
+	display: block;
+	font-weight: bold;
+	font-size: 15px;
+}
+.table-hover>tbody>tr:hover>th {
+	background-color: #3c6489;
+}
+</style>
+</head>
+
+<body onLoad="ListDBValues();">
+<div id="slide-out-left" class="side-nav">
+  <ul class="collapsible" data-collapsible="accordion" id="navigation">
+  </ul>
+</div>
+<div id="page">
+  <div class="top-navbar">
+    <div class="top-navbar-left"><a href="#" id="menu-left" data-activates="slide-out-left"><i
+                            class="fa fa-bars"></i></a></div>
+    <div class="site-title">
+      <h1>Dashboard</h1>
+    </div>
+  </div>
+</div>
+<section class="content"> 
+  <!-- Small boxes (Stat box) -->
+  
+  <div class="content-container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box"> <a class="info-box-icon bg-aqua" href="expence.html"><img src="images/expence.png" width="50" alt="" /></a>
+          <div class="info-box-content"> <a href="add-expence.html" style="float: right; font-size: 22px;"><i
+                                        class="fa fa-plus-circle"></i></a> <a  href="expence.html" style="text-decoration: none"> <span class="info-box-number">Expense</span> <span class="info-box-text" id="first"><strong>Total:</strong> </span> <span class="info-box-text" id="firstthism"><strong>This Month:</strong> </span> <span class="info-box-text" id="firsttoday"><strong>Today:</strong> </span></a> </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box"> <a class="info-box-icon bg-aqua" href="income.html"><img src="images/income.png" width="55"
+                                                                                     alt="" /></a>
+          <div class="info-box-content"> <a href="add-income.html" style="float: right; font-size: 22px;"><i
+                                        class="fa fa-plus-circle"></i> </a> <a  href="income.html" style="text-decoration: none"> <span class="info-box-number">Income</span> <span class="info-box-text" id="first1"><strong>Total:</strong> </span> <span class="info-box-text" id="firstthism1"><strong>This Month:</strong> </span> <span class="info-box-text" id="firsttoday1"><strong>Today:</strong> </span></a> </div>
+          
+          <!-- /.info-box-content --> 
+        </div>
+        <!-- /.info-box --> 
+      </div>
+      <!-- /.col --> 
+      
+      <!-- fix for small devices only -->
+      <div class="clearfix visible-sm-block"></div>
+      <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box"> <a class="info-box-icon bg-aqua" href="to-do.html"><img src="images/todo.png" width="50"
+                                                                                    alt="" /></a>
+          <div class="info-box-content"> <a href="to-do.html" style="float: right; font-size: 22px;"><i
+                                        class="fa fa-plus-circle"></i> </a> <a  href="to-do.html" style="text-decoration: none"> <span class="info-box-number">To Do</span> <span><strong>Total : </strong></span><span id="testw"></span>/<span id="first2"></span></a> </div>
+          
+          <!-- /.info-box-content --> 
+        </div>
+        <!-- /.info-box --> 
+      </div>
+      <!-- /.col --> 
+      
+    </div>
+  </div>
+  <script type="text/javascript" src="js/jquery.js"></script> 
+  <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+  <script type="text/javascript" src="js/materialize.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.mixitup.min.js"></script> 
+  <script type="text/javascript" src="js/slick.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.swipebox.min.js"></script> 
+  <script type="text/javascript" src="js/custom.js"></script> 
+  <script type="text/javascript" src="js/adminlte.min.js"></script> 
+  <script type="text/javascript" src="js/moment.js"></script> 
+  <script type="text/javascript" charset="utf-8">
+                        var db;
+                        var shortName = 'IncomeExpence';
+                        var version = '1.0';
+                        var displayName = 'IncomeExpence';
+                        var maxSize = 65535;
+                        window.localStorage["Expense_id"] = 0;
+                        function errorHandler(transaction, error) {
+                            alert('Error: ' + error.message + ' code: ' + error.code);
+                        }
+
+                        function ListDBValues() {
+
+
+                            if (!window.openDatabase) {
+                                alert('Databases are not supported in this browser.');
+                                return;
+                            }
+                            db = openDatabase(shortName, version, displayName, maxSize);
+
+
+                            db.transaction(function(tx) {
+                                //tx.executeSql('drop table expense_master');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS expense_master(expense_id INTEGER NOT NULL PRIMARY KEY,expense_master_id INTEGER NOT NULL DEFAULT 0,expense_date date NOT NULL,amount DECIMAL(10,2) NOT NULL DEFAULT 0.00,review TEXT  NULL)');
+                                //tx.executeSql('drop table income');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS income(income_id INTEGER NOT NULL PRIMARY KEY,income_master_id INTEGER NOT NULL DEFAULT 0,income_date date NOT NULL,amount DECIMAL(10,2) NOT NULL DEFAULT 0,review TEXT  NULL)');
+                                // tx.executeSql('DROP TABLE todo');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS todo(todo_id INTEGER NOT NULL PRIMARY KEY,todo_item TEXT NOT NULL,status INTEGER,todo_date date )');
+                                //tx.executeSql('drop table incometype');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS incometype(id INTEGER NOT NULL PRIMARY KEY,incometype TEXT NOT NULL)');
+                                //tx.executeSql('drop table expensetype');
+                                tx.executeSql('CREATE TABLE IF NOT EXISTS expensetype(id INTEGER NOT NULL PRIMARY KEY,expensetype TEXT NOT NULL)');
+								
+								tx.executeSql('CREATE TABLE IF NOT EXISTS token_master(id INTEGER NOT NULL PRIMARY KEY,token TEXT NOT NULL)');
+								
+                            });
+                            ///////////////////////////////////////////////////////////////////expense////////////////////////////////////////////////////////////////////////////
+                            db.transaction(function(transaction) {
+
+                                transaction.executeSql('SELECT SUM(amount) AS ex_amount FROM expense_master ;', [],
+                                        function(transaction, Total) {
+
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+
+                                                if (Total.rows.item(0).ex_amount == null) {
+                                                    $('#first').append("0");
+                                                } else {
+                                                    var amount = parseFloat(Total.rows.item(0).ex_amount).toFixed(2);
+                                                    $('#first').append(amount);
+                                                }
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+
+
+                            db.transaction(function(transaction) {
+                                var startDate = moment().endOf('month').format('MM-DD-YYYY');
+                                var newend = moment().startOf('month').format('MM-DD-YYYY');
+                                console.log(startDate, newend);
+
+                                where = 'SELECT SUM(amount) AS ex_amount  FROM expense_master where expense_date BETWEEN   "' + newend + '" and  "' + startDate + '";';
+
+                                transaction.executeSql(where, [],
+                                        function(transaction, Total) {
+                                            var len = Total.rows.length;
+                                            for (var i = 0; i < len; i++) {
+                                            }
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+                                                if (Total.rows.item(0).ex_amount == null) {
+                                                    $('#firstthism').append("0");
+                                                } else {
+                                                    var amount = parseFloat(Total.rows.item(0).ex_amount).toFixed(2);
+                                                    $('#firstthism').append(amount);
+                                                }
+
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+                            db.transaction(function(transaction) {
+                                var startDate = moment().format('MM-DD-YYYY');
+                                // where = 'SELECT * FROM expense_master where expense_date <= "' + startDate + '" and expense_date >= "' + newend + '";';
+                                where = 'SELECT SUM(amount) AS ex_amount  FROM expense_master where expense_date BETWEEN   "' + startDate + '" and  "' + startDate + '";';
+                                //console.log(where)
+
+                                transaction.executeSql(where, [],
+                                        function(transaction, Total) {
+
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+
+                                                if (Total.rows.item(0).ex_amount == null) {
+                                                    $('#firsttoday').append("0");
+                                                } else {
+                                                    var amount = parseFloat(Total.rows.item(0).ex_amount).toFixed(2);
+                                                    $('#firsttoday').append(amount);
+                                                }
+                                                //alert(Total.rows.length);
+
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+                            //////////////////////////////////////////////////////////////////////////Income//////////////////////////////////////////////////////////////////
+                            db.transaction(function(transaction) {
+                                transaction.executeSql('SELECT SUM(amount) AS in_amount   FROM income;', [],
+                                        function(transaction, Total) {
+
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+
+                                                if (Total.rows.item(0).in_amount == null) {
+                                                    $('#first1').append("0");
+                                                } else {
+                                                    var amount = parseFloat(Total.rows.item(0).in_amount).toFixed(2);
+                                                    $('#first1').append(amount);
+                                                }
+
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+                            db.transaction(function(transaction) {
+                                var startDate = moment().endOf('month').format('MM-DD-YYYY');
+                                var newend = moment().startOf('month').format('MM-DD-YYYY');
+
+                                where = 'SELECT SUM(amount) AS in_amount FROM income where income_date BETWEEN   "' + newend + '" and  "' + startDate + '";';
+
+                                transaction.executeSql(where, [],
+                                        function(transaction, Total) {
+                                            var len = Total.rows.length;
+                                            for (var i = 0; i < len; i++) {
+                                            }
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+
+                                                if (Total.rows.item(0).in_amount == null) {
+                                                    $('#firstthism1').append("0");
+                                                } else {
+                                                    var amount = parseFloat(Total.rows.item(0).in_amount).toFixed(2);
+                                                    $('#firstthism1').append(amount);
+                                                }
+
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+                            db.transaction(function(transaction) {
+                                var startDate = moment().format('MM-DD-YYYY');
+                                where = 'SELECT SUM(amount) AS in_amount FROM income where income_date BETWEEN   "' + startDate + '" and  "' + startDate + '";';
+                                //console.log(where)
+
+                                transaction.executeSql(where, [],
+                                        function(transaction, Total) {
+                                            var len = Total.rows.length;
+                                            for (var i = 0; i < len; i++) {
+                                                // console.log(Total.rows.item(i));
+                                            }
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+                                                if (Total.rows.item(0).in_amount == null) {
+                                                    $('#firsttoday1').append("0");
+                                                } else {
+                                                    var amount = parseFloat(Total.rows.item(0).in_amount).toFixed(2);
+                                                    $('#firsttoday1').append(amount);
+                                                }
+
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+                            ////////////////////////////////////////////////////////////////// TO Do//////////////////////////////////////////////////////////////////////////////
+
+                            db.transaction(function(transaction) {
+                                transaction.executeSql('SELECT *  FROM todo  ;', [],
+                                        function(transaction, Total) {
+
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+                                                $('#first2').append(Total.rows.length);
+                                            } else {
+                                                $('#first2').append("0");
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+
+
+                            db.transaction(function(transaction) {
+                                transaction.executeSql('SELECT *  FROM todo  where status=1 ;', [],
+                                        function(transaction, Total) {
+
+                                            if (Total != null && Total.rows != null && Total.rows.length > 0) {
+                                                $('#testw').append(Total.rows.length);
+                                            } else {
+                                                $('#testw').append("0");
+                                            }
+
+                                        }, errorHandler);
+                            });
+
+                            //                            db.transaction(function(transaction)
+                            //                            {
+                            //                                var startDate = moment().format('MM-DD-YYYY');
+                            //                                var newend = moment().startOf('month').format('MM-DD-YYYY');
+                            //                                where = 'SELECT * FROM todo where todo_date BETWEEN   "' + newend + '" and  "' + startDate + '" ;';
+                            //
+                            //                                transaction.executeSql(where, [],
+                            //                                        function(transaction, Total)
+                            //                                        {
+                            //                                            var len = Total.rows.length;
+                            //                                            for (var i = 0; i < len; i++) {
+                            //                                                //console.log(Total.rows.item(i));
+                            //                                            }
+                            //                                            if (Total != null && Total.rows != null && Total.rows.length > 0)
+                            //                                            {
+                            //                                                //alert(Total.rows.length);
+                            //                                                $('#firstthism2').append(Total.rows.length);
+                            //                                            } else {
+                            //                                                $('#firstthism2').append("0");
+                            //                                            }
+                            //
+                            //
+                            //                                        }, errorHandler);
+                            //                            });
+
+
+                            //                            db.transaction(function(transaction)
+                            //                            {
+                            //                                var startDate = moment().format('MM-DD-YYYY');
+                            //
+                            //                                where = 'SELECT * FROM todo where todo_date BETWEEN   "' + startDate + '" and  "' + startDate + '" ;';
+                            //                                // console.log(where)
+                            //
+                            //                                transaction.executeSql(where, [],
+                            //                                        function(transaction, Total)
+                            //                                        {
+                            //                                            var len = Total.rows.length;
+                            //                                            for (var i = 0; i < len; i++) {
+                            //                                                //console.log(Total.rows.item(i));
+                            //                                            }
+                            //                                            if (Total != null && Total.rows != null && Total.rows.length > 0)
+                            //                                            {
+                            //                                                $('#firsttoday2').append(Total.rows.length);
+                            //                                            } else {
+                            //                                                $('#firsttoday2').append("0");
+                            //                                            }
+                            //
+                            //                                        }, errorHandler);
+                            //                            });
+
+                        }
+
+
+
+
+
+
+
+            </script> 
+</section>
+<!--<script type="text/javascript" src="cordova.js"></script>--> 
+<script type="text/javascript" src="js/ads.js"></script> 
+<script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript">
+                        app.initialize();
+        </script> 
+<script>
+function specificPageFunction() {
+      window.FirebasePlugin.onTokenRefresh(function (token) {
+         //alert(token);
+       /* $.ajax({
+          type: "POST",
+          url: 'http://socjoi.com/api/notification-token-api.php?account_id=' + window.localStorage["Socjoi_AccountId"] + '&account_code=' + window.localStorage["Socjoi_AccountCode"],
+          crossDomain: true,
+          data: { member_id: localStorage.SOCJOI_LOGIN_ID, family_member_id: localStorage.Socjoi_Family_Mem_ID, token: token },
+          dataType: 'json',
+          success: function (response) {
+            // alert('Token ' + response.fcm_token);
+          },
+          error: function () {
+
+          }
+        });*/
+		
+		db.transaction(function(transaction)
+		{
+			transaction.executeSql("delete from token_master ", []);
+			
+			transaction.executeSql('INSERT INTO token_master (token) VALUES (?)', [token]);			
+			
+			transaction.executeSql('SELECT token FROM token_master ', [],
+				function(transaction, result)
+				{
+					if (result != null && result.rows != null && result.rows.length > 0)
+					{
+						//alert(result.rows.length);
+						var row = result.rows.item(0);
+						//alert(row.token);
+					}
+				}
+			, errorHandler);
+		});
+					
+      }, function (error) {
+        alert("error:"+error);
+      });
+    }
+$("#navigation").load("navigation.html");
+</script><strong></strong>
+</body>
+</html>
