@@ -1,7 +1,9 @@
 {
-  "name": "my-app",
-  "type": "custom",
+  "name": "PhoneGap App",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "custom",
+  "id": "c4c987bb"
 }
+  

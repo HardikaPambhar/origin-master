@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "phone-ionic-app-flow",
   "version": "1.0.0",
   "description": "my phonegap app",
   "main": "index.js",
@@ -19,5 +19,20 @@
   "bugs": {
     "url": "https://github.com/HardikaPambhar/origin-master/issues"
   },
-  "homepage": "https://github.com/HardikaPambhar/origin-master#readme"
+  "homepage": "https://github.com/HardikaPambhar/origin-master#readme",
+  "dependencies": {
+    "cordova-plugin-ionic": "^5.4.7"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-ionic": {
+        "APP_ID": "c4c987bb",
+        "CHANNEL_NAME": "Production",
+        "UPDATE_METHOD": "background",
+        "MAX_STORE": "2",
+        "MIN_BACKGROUND_DURATION": "30",
+        "UPDATE_API": "https://api.ionicjs.com"
+      }
+    }
+  }
 }
